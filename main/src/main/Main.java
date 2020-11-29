@@ -1,10 +1,10 @@
 package main;
-import views.Page;
-import controllers.MainController;
-
+import views.MainFrame;
 public class Main {
-	public static Page cPage;
+	public static MainFrame frame;
+	
 	public static void main(String[] args) {
-		MainController.invoke("LoginPage");
+		frame = new MainFrame(); // Create main frame
+		controllers.MainController.invoke("RegisterPage");
 	}
 }

@@ -1,5 +1,5 @@
 eclipse.preferences.version=1
 encoding//src/main/Main.java=UTF-8
-encoding//src/views/LoginPage.java=UTF-8
-encoding//src/views/Page.java=UTF-8
-encoding//src/views/RegisterPage.java=UTF-8
+encoding//src/views/LoginPanel.java=UTF-8
+encoding//src/views/MainFrame.java=UTF-8
+encoding//src/views/RegisterPanel.java=UTF-8
