@@ -3,19 +3,23 @@ import controllers.MainController;
 import main.Main;
 
 import java.awt.Color;
+import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.awt.font.TextAttribute;
 
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
+import java.util.Map;
 
 public class RegisterPanel extends JPanel {
 	private JTextField username;
-	private JTextField name;
 	private JPasswordField password;
 	private JPasswordField rePassword;
 	
@@ -30,15 +34,8 @@ public class RegisterPanel extends JPanel {
 	    JPanel usernamePanel = new JPanel();
 	    usernamePanel.add(usernameTitle);
 	    usernamePanel.add(username);
-	    usernamePanel.setLayout(new GridLayout(1, 3));
-	    
-	    // Name panel
- 		JLabel nameTitle = new JLabel("Tên hiển thị");
- 	    name = new JTextField();
- 	    JPanel namePanel = new JPanel();
- 	    namePanel.add(nameTitle);
- 	    namePanel.add(name);
- 	    namePanel.setLayout(new GridLayout(1, 3));
+	    usernamePanel.setLayout(new GridLayout(1, 2));
+	    usernamePanel.setBackground(Color.white);
 	    
 	    // Password panel
 	    JLabel passwordTitle = new JLabel("Mật khẩu");
@@ -46,7 +43,8 @@ public class RegisterPanel extends JPanel {
 	    JPanel passwordPanel = new JPanel();
 	    passwordPanel.add(passwordTitle);
 	    passwordPanel.add(password);
-	    passwordPanel.setLayout(new GridLayout(1, 3));
+	    passwordPanel.setLayout(new GridLayout(1, 2));
+	    passwordPanel.setBackground(Color.white);
 	    
 	    // Repassword panel
 	    JLabel rePasswordTitle = new JLabel("Nhập lại mật khẩu");
@@ -54,24 +52,42 @@ public class RegisterPanel extends JPanel {
 	    JPanel rePasswordPanel = new JPanel();
 	    rePasswordPanel.add(rePasswordTitle);
 	    rePasswordPanel.add(rePassword);
-	    rePasswordPanel.setLayout(new GridLayout(1, 3));
+	    rePasswordPanel.setLayout(new GridLayout(1, 2));
+	    rePasswordPanel.setBackground(Color.white);
 	    
 	    // Action panel
 	    JButton submit = new JButton("Đăng ký");
-	    JButton login = new JButton("Đăng nhập");
-	    login.addActionListener(new ActionListener(){
-	    	public void actionPerformed(ActionEvent e){
-	    		MainController.invoke("LoginPanel");
-	    	}  
-    	});
+		JLabel login = new JLabel("Đăng nhập");
+		login.setForeground(Color.BLUE.darker());
+		// Set hành động của nút đăng nhập
+		login.addMouseListener(new MouseAdapter() {
+			// Click vào thì điều hướng đến trang đăng nhập
+			public void mouseClicked(MouseEvent e) {
+				MainController.invoke("LoginPanel");
+		    }
+			// Di chuột vào sẽ hiện gạch chân
+			public void mouseEntered(MouseEvent e) {
+				Map attributes = login.getFont().getAttributes();
+				attributes.put(TextAttribute.UNDERLINE, TextAttribute.UNDERLINE_ON);
+				login.setFont(login.getFont().deriveFont(attributes));
+		    }
+			// Ẩn gạch chân khi di chuột ra ngoài
+		    public void mouseExited(MouseEvent e) {
+		    	Map attributes = login.getFont().getAttributes();
+				attributes.put(TextAttribute.UNDERLINE, -1);
+				login.setFont(login.getFont().deriveFont(attributes));
+		    }
+		});
 		JPanel actionPanel = new JPanel();
 		actionPanel.add(submit);
 		actionPanel.add(login);
-		
+		actionPanel.setBackground(Color.white);
+		    
 		// Add child panel to parent panel
-		add(new JLabel("Đăng ký", JLabel.CENTER));
+		JLabel title = new JLabel("Đăng ký", JLabel.CENTER);
+		title.setFont(new Font(title.getFont().getName(), Font.PLAIN, 18));
+		add(title);
 	    add(usernamePanel);
-	    add(namePanel);
 	    add(passwordPanel);
 	    add(rePasswordPanel);
 	    add(actionPanel);
@@ -79,8 +95,9 @@ public class RegisterPanel extends JPanel {
 	    // Config parent panel
 		setBounds(
 			Main.frame.getPercentOfWidth(30), Main.frame.getPercentOfHeight(15),
-			Main.frame.getPercentOfWidth(40), Main.frame.getPercentOfHeight(37.3)
+			Main.frame.getPercentOfWidth(40), Main.frame.getPercentOfHeight(31)
 		);
-		setLayout(new GridLayout(6, 1));
+		setBackground(Color.white);
+		setLayout(new GridLayout(5, 1));
 	}
 }

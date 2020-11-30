@@ -15,6 +15,7 @@ public class MainFrame extends JFrame {
 		setBackground(Color.white);
 		setLayout(null);
 		setJMenuBar(new MenuBar()); // Add MenuBar
+		getContentPane().setBackground(Color.white); // Set background color
 		setVisible(true); // Hiển thị frame
 	}
 	

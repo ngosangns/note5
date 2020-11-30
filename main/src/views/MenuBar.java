@@ -24,21 +24,28 @@ public class MenuBar extends JMenuBar {
 				MainController.invoke("LoginPanel");
 			}
 		});
+		login.setBackground(Color.white);
+		
 		register.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				MainController.invoke("RegisterPanel");
 			}
 		});
+		register.setBackground(Color.white);
+		
 		changeInfo.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				MainController.invoke("ChangeInfoPanel");
 			}
 		});
+		changeInfo.setBackground(Color.white);
+		
 		boardItem.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				MainController.invoke("MainBoardPanel");
 			}
 		});
+		boardItem.setBackground(Color.white);
 		
 		account.add(login);
 		account.add(register);
