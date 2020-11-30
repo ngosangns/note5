@@ -15,13 +15,18 @@ public class MainController {
 		
 		// Set new panel
 		switch(pageName) {
-			case "LoginPage": {
+			case "LoginPanel": {
 				cPanel = new LoginPanel();
 				Main.frame.add(cPanel);
 				break;
 			}
-			case "RegisterPage": {
+			case "RegisterPanel": {
 				cPanel = new RegisterPanel();
+				Main.frame.add(cPanel);
+				break;
+			}
+			case "ChangeInfoPanel": {
+				cPanel = new ChangeInfoPanel();
 				Main.frame.add(cPanel);
 				break;
 			}

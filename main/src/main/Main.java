@@ -5,6 +5,6 @@ public class Main {
 	
 	public static void main(String[] args) {
 		frame = new MainFrame(); // Create main frame
-		controllers.MainController.invoke("RegisterPage");
+		controllers.MainController.invoke("ChangeInfoPanel");
 	}
 }
