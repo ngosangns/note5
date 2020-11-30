@@ -18,6 +18,8 @@ public class ChangeInfoPanel extends JPanel {
 	
 	public ChangeInfoPanel() {
 		super();
+		Main.frame.setTitle("Cập nhật thông tin");
+		
 		// Name panel
 		JLabel usernameTitle = new JLabel("Tên đăng nhập");
 	    JPanel usernamePanel = new JPanel();

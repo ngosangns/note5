@@ -20,7 +20,6 @@ public class LoginPanel extends JPanel {
 	public LoginPanel() {
 		super();
 		Main.frame.setTitle("Đăng nhập");
-		Main.frame.setBackground(Color.white);
 		
 		// Username panel
 		JLabel usernameTitle = new JLabel("Tên đăng nhập");
@@ -43,7 +42,7 @@ public class LoginPanel extends JPanel {
 	    JButton signUp = new JButton("Đăng ký");
 		signUp.addActionListener(new ActionListener(){
 	    	public void actionPerformed(ActionEvent e){
-	    		MainController.invoke("RegisterPage");
+	    		MainController.invoke("RegisterPanel");
 	    	}  
     	});
 		JPanel actionPanel = new JPanel();
@@ -61,6 +60,8 @@ public class LoginPanel extends JPanel {
 			Main.frame.getPercentOfWidth(30), Main.frame.getPercentOfHeight(15),
 			Main.frame.getPercentOfWidth(40), Main.frame.getPercentOfHeight(25)
 		);
+		
+		// Set grid 4 dòng 1 cột
 		setLayout(new GridLayout(4, 1));
 	}
 }

@@ -30,6 +30,11 @@ public class MainController {
 				Main.frame.add(cPanel);
 				break;
 			}
+			case "MainBoardPanel": {
+				cPanel = new MainBoardPanel();
+				Main.frame.add(cPanel);
+				break;
+			}
 		}
 		
 		// Reset

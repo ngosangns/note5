@@ -11,26 +11,43 @@ public class MainFrame extends JFrame {
 	
 	public MainFrame() {
 		setSize(width, height);
-		setResizable(false);
+		setResizable(false); // Chặn thay đổi kích thước frame
 		setBackground(Color.white);
 		setLayout(null);
-		setVisible(true);
+		setJMenuBar(new MenuBar()); // Add MenuBar
+		setVisible(true); // Hiển thị frame
 	}
 	
+	/**
+	 * Set tiêu đề cho frame
+	 */
 	@Override
 	public void setTitle(String title) {
 		super.setTitle("Note5 - " + title);
 	}
 	
+	/**
+	 * Hiển thị frame
+	 */
 	public void visible() {
 		setVisible(true);
 	}
 	
-	public int getPercentOfWidth(int percent) {
+	/**
+	 * Lấy chiều dài của frame dựa vào % đưa vào
+	 * @param percent
+	 * @return
+	 */
+	public int getPercentOfWidth(double percent) {
 		return (int)Math.round(width*percent/100);
 	}
 	
-	public int getPercentOfHeight(int percent) {
+	/**
+	 * Lấy chiều rộng của frame dựa vào % đưa vào
+	 * @param percent
+	 * @return
+	 */
+	public int getPercentOfHeight(double percent) {
 		return (int)Math.round(height*percent/100);
 	}
 }

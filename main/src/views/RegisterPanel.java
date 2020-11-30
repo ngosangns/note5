@@ -15,6 +15,7 @@ import javax.swing.JTextField;
 
 public class RegisterPanel extends JPanel {
 	private JTextField username;
+	private JTextField name;
 	private JPasswordField password;
 	private JPasswordField rePassword;
 	
@@ -30,6 +31,14 @@ public class RegisterPanel extends JPanel {
 	    usernamePanel.add(usernameTitle);
 	    usernamePanel.add(username);
 	    usernamePanel.setLayout(new GridLayout(1, 3));
+	    
+	    // Name panel
+ 		JLabel nameTitle = new JLabel("Tên hiển thị");
+ 	    name = new JTextField();
+ 	    JPanel namePanel = new JPanel();
+ 	    namePanel.add(nameTitle);
+ 	    namePanel.add(name);
+ 	    namePanel.setLayout(new GridLayout(1, 3));
 	    
 	    // Password panel
 	    JLabel passwordTitle = new JLabel("Mật khẩu");
@@ -52,7 +61,7 @@ public class RegisterPanel extends JPanel {
 	    JButton login = new JButton("Đăng nhập");
 	    login.addActionListener(new ActionListener(){
 	    	public void actionPerformed(ActionEvent e){
-	    		MainController.invoke("LoginPage");
+	    		MainController.invoke("LoginPanel");
 	    	}  
     	});
 		JPanel actionPanel = new JPanel();
@@ -62,6 +71,7 @@ public class RegisterPanel extends JPanel {
 		// Add child panel to parent panel
 		add(new JLabel("Đăng ký", JLabel.CENTER));
 	    add(usernamePanel);
+	    add(namePanel);
 	    add(passwordPanel);
 	    add(rePasswordPanel);
 	    add(actionPanel);
@@ -69,8 +79,8 @@ public class RegisterPanel extends JPanel {
 	    // Config parent panel
 		setBounds(
 			Main.frame.getPercentOfWidth(30), Main.frame.getPercentOfHeight(15),
-			Main.frame.getPercentOfWidth(40), Main.frame.getPercentOfHeight(31)
+			Main.frame.getPercentOfWidth(40), Main.frame.getPercentOfHeight(37.3)
 		);
-		setLayout(new GridLayout(5, 1));
+		setLayout(new GridLayout(6, 1));
 	}
 }
