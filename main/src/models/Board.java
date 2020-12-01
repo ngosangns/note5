@@ -1,10 +1,9 @@
 package models;
-import java.sql.Date;
 
 public class Board {
 	public String id;
 	public String name;
-	public Date date_created;
+	public String date_created;
 	public String user_id;
 	public Note[] notes;
 }

@@ -35,24 +35,24 @@ public class MainController {
 		
 		// Set new panel
 		switch(pageName) {
-			case "LoginPanel": {
-				cPanel = new LoginPanel();
-				Main.frame.add(cPanel);
+			case "LoginView": {
+				cPanel = new LoginView();
+				Main.frame.getContentPane().add(cPanel);
 				break;
 			}
-			case "RegisterPanel": {
-				cPanel = new RegisterPanel();
-				Main.frame.add(cPanel);
+			case "RegisterView": {
+				cPanel = new RegisterView();
+				Main.frame.getContentPane().add(cPanel);
 				break;
 			}
-			case "ChangeInfoPanel": {
-				cPanel = new ChangeInfoPanel();
-				Main.frame.add(cPanel);
+			case "ChangeInfoView": {
+				cPanel = new ChangeInfoView();
+				Main.frame.getContentPane().add(cPanel);
 				break;
 			}
-			case "MainBoardPanel": {
-				cPanel = new MainBoardPanel();
-				Main.frame.add(cPanel);
+			case "BoardView": {
+				cPanel = new BoardView();
+				Main.frame.getContentPane().add(cPanel);
 				break;
 			}
 		}

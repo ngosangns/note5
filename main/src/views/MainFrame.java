@@ -1,6 +1,7 @@
 package views;
 
 import java.awt.Color;
+import java.awt.GridLayout;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -10,10 +11,11 @@ public class MainFrame extends JFrame {
 	public int height = 500;
 	
 	public MainFrame() {
+		getContentPane().setBackground(Color.WHITE);
+		getContentPane().setLayout(new GridLayout(1, 0, 0, 0));
 		setSize(width, height);
 		setResizable(false); // Chặn thay đổi kích thước frame
 		setBackground(Color.white);
-		setLayout(null);
 		setJMenuBar(new MenuBar()); // Add MenuBar
 		getContentPane().setBackground(Color.white); // Set background color
 		setVisible(true); // Hiển thị frame

@@ -1,30 +1,95 @@
 package models;
 
 import java.io.BufferedReader;
+import java.io.DataOutputStream;
+import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.ProtocolException;
 import java.net.URL;
+import java.util.concurrent.CompletableFuture;
+
+import javax.net.ssl.HttpsURLConnection;
 
 public class API {
-	public static String sendGet(String url) throws Exception {
-		URL obj = new URL(url);
-		HttpURLConnection con = (HttpURLConnection) obj.openConnection();
-		
-		// Optional default is GET
-		con.setRequestMethod("GET");
-
-		// Add request header
-		con.setRequestProperty("User-Agent", "Mozilla/5.0");
-
-		BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream()));
-		String inputLine;
-		StringBuffer response = new StringBuffer();
-
-		while ((inputLine = in.readLine()) != null) {
-			response.append(inputLine);
-		}
-		in.close();
-		
-		return response.toString();
+	/**
+	 * Gửi request get đến url
+	 * @param url
+	 * @return
+	 * @throws Exception
+	 */
+	public static CompletableFuture<String> sendGet(String url) throws Exception {
+		return CompletableFuture.supplyAsync(() -> {
+			String returnResponse = "Lỗi kết nối";
+            try {
+            	URL obj = new URL(url);
+        		HttpURLConnection con = (HttpURLConnection) obj.openConnection();
+        		con.setRequestMethod("GET");
+        		// Thêm request header
+        		con.setRequestProperty("User-Agent", "Mozilla/5.0");
+        		BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream()));
+        		String inputLine;
+        		StringBuffer response = new StringBuffer();
+        		while ((inputLine = in.readLine()) != null) {
+        			response.append(inputLine);
+        		}
+        		in.close(); // Đóng kết nối
+        		returnResponse = response.toString();
+            } catch (MalformedURLException e) {
+				e.printStackTrace();
+			} catch (ProtocolException e) {
+				e.printStackTrace();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+			return returnResponse;
+        });
 	}
+	
+	public static CompletableFuture<String> sendPost(String url, String urlParameters) throws Exception {
+		return CompletableFuture.supplyAsync(() -> {
+			String returnResponse = "Lỗi kết nối";
+			try {
+				URL obj = new URL(url);
+				HttpURLConnection con = (HttpURLConnection)obj.openConnection();
+				// Thêm request header
+				con.setRequestMethod("POST");
+				con.setRequestProperty("User-Agent", "Mozilla/5.0");
+				con.setRequestProperty("Accept-Language", "en-US,en;q=0.5");
+				// Gửi request
+				con.setDoOutput(true);
+				DataOutputStream wr = new DataOutputStream(con.getOutputStream());
+				wr.writeBytes(urlParameters);
+				wr.flush();
+				wr.close(); // Đóng request
+				BufferedReader in
+					= new BufferedReader(new InputStreamReader(con.getInputStream()));
+				String inputLine;
+				StringBuffer response = new StringBuffer();
+				while ((inputLine = in.readLine()) != null) {
+					response.append(inputLine);
+				}
+				in.close();
+				returnResponse = response.toString();
+			}
+			catch(Exception e) {
+				e.printStackTrace();
+			}
+			return returnResponse;
+        });
+	}
+	
+//	public static CompletableFuture<String> createUser(User user) {
+//		try {
+//			sendPost("http://api.kaito.ninja/users", "username="+user.username+"&password="+user.password)
+//				.thenAccept(res -> {
+//					SwingAPI.alert(res);
+//				});
+//		} catch (Exception e1) {
+//			// TODO Auto-generated catch block
+//			e1.printStackTrace();
+//		}
+//	}
+	
 }
