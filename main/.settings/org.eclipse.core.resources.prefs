@@ -2,6 +2,7 @@ eclipse.preferences.version=1
 encoding//src/controllers/MainController.java=UTF-8
 encoding//src/main/Main.java=UTF-8
 encoding//src/models/API.java=UTF-8
+encoding//src/models/UserAPI.java=UTF-8
 encoding//src/views/BoardContextMenu.java=UTF-8
 encoding//src/views/BoardView.java=UTF-8
 encoding//src/views/ChangeInfoView.java=UTF-8

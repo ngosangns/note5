@@ -2,11 +2,6 @@ package controllers;
 import views.*;
 import main.Main;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-
 import javax.swing.JPanel;
 
 public class MainController {
@@ -14,21 +9,6 @@ public class MainController {
 	private static JPanel cPanel;
 	
 	public static void invoke(String pageName) {
-		// Tạo folder data nếu không tồn tại
-		File dataDir = new File("data");
-	    if (!dataDir.exists()){
-	    	dataDir.mkdir();
-	    }
-	    
-	    // Tạo file chứa user token nếu chưa tồn tại
-	    File tokenFile = new File("user_token");
-	    try {
-			tokenFile.createNewFile();
-		} catch (IOException e) {
-			e.printStackTrace();
-		} // If file already exists will do nothing
-//	    FileOutputStream oFile = new FileOutputStream(tokenFile, false);
-	    
 		// Remove old panel
 		if(cPanel != null)
 			Main.frame.remove(cPanel);
@@ -41,6 +21,11 @@ public class MainController {
 				break;
 			}
 			case "RegisterView": {
+				// Kiểm tra tồn tại token
+				// Nếu có thì lấy thông tin user
+				if(Main.logging_user.token.length() > 0) {
+					
+				}
 				cPanel = new RegisterView();
 				Main.frame.getContentPane().add(cPanel);
 				break;
