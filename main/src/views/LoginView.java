@@ -4,7 +4,7 @@ import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 
 import main.Main;
-import models.User;
+import models.UserModel;
 import net.miginfocom.swing.MigLayout;
 import javax.swing.JLabel;
 import javax.swing.SwingConstants;
@@ -49,7 +49,7 @@ public class LoginView extends JPanel {
 			public void actionPerformed(ActionEvent e) {
 				String passwordText = String.valueOf(password.getPassword());
 				String rePasswordText = String.valueOf(password.getPassword());
-				User user = new User();
+				UserModel user = new UserModel();
 	    		user.username = username.getText();
 	    		user.password = String.valueOf(password.getPassword());
 			}

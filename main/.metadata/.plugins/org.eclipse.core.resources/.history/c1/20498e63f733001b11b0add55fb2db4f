@@ -1,0 +1,27 @@
+package models;
+
+import java.util.Map;
+import java.util.concurrent.CompletableFuture;
+
+import org.json.JSONException;
+
+public class UserAPI extends API {
+	public static CompletableFuture<User> getLoggingUserInfoFromToken(String token) {
+		User user = new User();
+		user.token = token;
+		
+		try {
+			sendGet("http://api.kaito.ninja/user", token)
+				.thenAccept(res -> {
+					try {
+						Map<String, Object> mapUser = stringToMap(res);
+					} catch (JSONException e) {
+						e.printStackTrace();
+					}
+				});
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+}

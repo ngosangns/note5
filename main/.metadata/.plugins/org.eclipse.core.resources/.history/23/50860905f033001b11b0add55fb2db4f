@@ -1,0 +1,55 @@
+package main;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.util.Scanner;
+
+import models.User;
+import views.MainFrame;
+
+public class Main {
+	public static MainFrame frame;
+	public static User logging_user;
+	
+	public static void main(String[] args) {
+		// Dựng frame
+		frame = new MainFrame();
+		
+		// Tạo mới logging user
+		logging_user = new User();
+		logging_user.token = "";
+		
+		// Tạo file chứa user token nếu chưa tồn tại
+	    File tokenFile = new File("user_token");
+	    try {
+			tokenFile.createNewFile();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	    
+	    
+	    // Đọc user token lấy token
+	    try {
+			FileInputStream fileInputStream = new FileInputStream("user_token");
+			Scanner scanner = new Scanner(fileInputStream);
+			
+			while (scanner.hasNextLine()) {
+				logging_user.token += scanner.nextLine();
+            }
+			
+			// Đóng file
+			try {
+				scanner.close();
+                fileInputStream.close();
+            } catch (IOException ex) { }
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		}
+	    
+		controllers.MainController.invoke("RegisterView");
+		
+//		test asd = new test();
+//		asd.setVisible(true);
+	}
+}

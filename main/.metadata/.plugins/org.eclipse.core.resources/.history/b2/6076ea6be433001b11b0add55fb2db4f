@@ -1,0 +1,12 @@
+package views;
+
+import javax.swing.JMenuItem;
+import javax.swing.JPopupMenu;
+
+public class BoardContextMenu extends JPopupMenu {
+	public JMenuItem rename = new JMenuItem("Sửa");
+	public JMenuItem delete = new JMenuItem("Xóa");
+	BoardContextMenu() {
+		
+	}
+}

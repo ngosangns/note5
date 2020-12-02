@@ -6,11 +6,15 @@ import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 
+import controllers.MainController;
 import main.Main;
+import models.API;
 import models.SwingAPI;
-import models.User;
+import models.UserAPI;
+import models.UserModel;
 import net.miginfocom.swing.MigLayout;
 import java.awt.event.ActionListener;
+import java.util.concurrent.CompletableFuture;
 import java.awt.event.ActionEvent;
 
 public class RegisterView extends JPanel {
@@ -56,7 +60,7 @@ public class RegisterView extends JPanel {
 				String passwordText = String.valueOf(password.getPassword());
 				String rePasswordText = String.valueOf(rePassword.getPassword());
 				
-				User user = new User();
+				UserModel user = new UserModel();
 	    		user.username = username.getText();
 	    		user.password = String.valueOf(password.getPassword());
 	    		
@@ -72,6 +76,17 @@ public class RegisterView extends JPanel {
 	    			return;
 	    		}
 	    		
+	    		// Kiểm tra nhập lại mật khẩu
+	    		if(!passwordText.equals(rePasswordText)) {
+	    			SwingAPI.alert("Mật khẩu không trùng khớp");
+	    			return;
+	    		}
+	    		
+//	    		UserAPI.create(user).thenAccept(resUser -> {
+//	    			Main.logging_user = resUser;
+//	    			API.writeTokenFile(resUser.token);
+//	    			MainController.invoke("BoardView");
+//	    		});
 	    		
 			}
 		});

@@ -1,0 +1,44 @@
+package views;
+
+import javax.swing.JButton;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JTextField;
+
+import main.Main;
+import net.miginfocom.swing.MigLayout;
+
+public class RegisterView extends JPanel {
+	private JTextField textField;
+	private JTextField textField_1;
+	public RegisterView() {
+		super();
+		setLayout(new MigLayout("insets 0", "[grow][::250px,grow][grow]", "[grow][::300px,grow][grow]"));
+		
+		JPanel panel = new JPanel();
+		add(panel, "cell 1 1,grow");
+		panel.setLayout(new MigLayout("insets 0", "[grow]", "[][]"));
+		
+		JPanel panel_1 = new JPanel();
+		panel.add(panel_1, "cell 0 0,grow");
+		panel_1.setLayout(new MigLayout("", "[][grow]", "[][]"));
+		
+		JLabel lblNewLabel = new JLabel("Tên đăng nhập");
+		panel_1.add(lblNewLabel, "cell 0 0,alignx left");
+		
+		textField = new JTextField();
+		panel_1.add(textField, "cell 1 0,growx");
+		textField.setColumns(10);
+		
+		JLabel lblNewLabel_1 = new JLabel("Mật khẩu");
+		panel_1.add(lblNewLabel_1, "cell 0 1,alignx left");
+		
+		textField_1 = new JTextField();
+		panel_1.add(textField_1, "cell 1 1,growx");
+		textField_1.setColumns(10);
+		
+		JButton submit = new JButton("Đăng nhập");
+		panel.add(submit, "cell 0 1,alignx center");
+		Main.frame.setTitle("Đăng ký");
+	}
+}

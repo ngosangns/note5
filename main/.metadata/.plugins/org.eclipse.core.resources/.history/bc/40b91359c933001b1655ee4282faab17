@@ -1,0 +1,111 @@
+package views;
+
+import java.awt.BorderLayout;
+import java.awt.EventQueue;
+
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+import javax.swing.border.EmptyBorder;
+import javax.swing.border.LineBorder;
+import java.awt.Color;
+import javax.swing.JLabel;
+import javax.swing.JButton;
+import java.awt.Dimension;
+import java.awt.Component;
+import javax.swing.JTextField;
+import javax.swing.JList;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
+import javax.swing.JToolBar;
+import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+
+public class Thao extends JFrame {
+
+	private JPanel contentPanelBG;
+	private JTextField txtAddBoard;
+	private JTextField txtaddNote;
+
+	/**
+	 * Launch the application.
+	 */
+	public static void main(String[] args) {
+		EventQueue.invokeLater(new Runnable() {
+			public void run() {
+				try {
+					Thao frame = new Thao();
+					frame.setVisible(true);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+		});
+	}
+
+	/**
+	 * Create the frame.
+	 */
+	public Thao() {
+		setMinimumSize(new Dimension(1000, 500));
+		setResizable(false);
+		setMaximumSize(new Dimension(1000, 500));
+		setSize(new Dimension(1000, 500));
+		setTitle("\u1EE8ng d\u1EE5ng ghi ch\u00FA");
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setBounds(100, 100, 450, 300);
+		contentPanelBG = new JPanel();
+		contentPanelBG.setBorder(new EmptyBorder(5, 5, 5, 5));
+		setContentPane(contentPanelBG);
+		contentPanelBG.setLayout(null);
+		
+		JPanel panelBoard = new JPanel();
+		panelBoard.setBorder(new LineBorder(new Color(0, 0, 0)));
+		panelBoard.setBounds(33, 54, 275, 379);
+		contentPanelBG.add(panelBoard);
+		panelBoard.setLayout(null);
+		
+		txtAddBoard = new JTextField();
+		txtAddBoard.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+			}
+		});
+		txtAddBoard.setBounds(18, 11, 198, 19);
+		panelBoard.add(txtAddBoard);
+		txtAddBoard.setColumns(10);
+		
+		JButton btnAddNote_1 = new JButton("+");
+		btnAddNote_1.setBounds(219, 11, 46, 19);
+		panelBoard.add(btnAddNote_1);
+		
+		JList list = new JList();
+		list.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+					
+			}
+		});
+		list.setBounds(18, 40, 247, 312);
+		panelBoard.add(list);
+		
+		JPanel panelNote = new JPanel();
+		panelNote.setBorder(new LineBorder(new Color(0, 0, 0)));
+		panelNote.setBounds(329, 52, 632, 385);
+		contentPanelBG.add(panelNote);
+		panelNote.setLayout(null);
+		
+		txtaddNote = new JTextField();
+		txtaddNote.setBounds(30, 10, 531, 19);
+		txtaddNote.setColumns(10);
+		panelNote.add(txtaddNote);
+		
+		JButton btnAddNote = new JButton("+");
+		btnAddNote.setBounds(571, 9, 46, 21);
+		panelNote.add(btnAddNote);
+		
+		JList list_1 = new JList();
+		list_1.setBounds(27, 45, 590, 312);
+		panelNote.add(list_1);
+	}
+}

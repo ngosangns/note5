@@ -1,0 +1,15 @@
+package main;
+import views.MainFrame;
+import views.Thao;
+
+public class Main {
+	public static MainFrame frame;
+	
+	public static void main(String[] args) {
+		frame = new MainFrame(); // Create main frame
+		controllers.MainController.invoke("MainBoardView");
+		
+		Thao thao = new Thao();
+		thao.setVisible(true);
+	}
+}

@@ -18,7 +18,7 @@ import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
 
 import main.Main;
-import models.Board;
+import models.BoardModel;
 import net.miginfocom.swing.MigLayout;
 import javax.swing.JButton;
 
@@ -26,7 +26,7 @@ public class BoardView extends JPanel {
 	private JTextField addBoardTextField;
 	private JTextField addNoteTextField;
 	
-	private Board[] boards = {};
+	private BoardModel[] boards = {};
 	
 	public BoardView() {
 		super();

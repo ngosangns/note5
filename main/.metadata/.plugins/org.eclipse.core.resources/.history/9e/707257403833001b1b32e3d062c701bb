@@ -1,0 +1,12 @@
+package models;
+
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+
+public class SwingAPI {
+	public static JOptionPane popup = new JOptionPane();
+	
+	public static void alert(String message) {
+		JOptionPane.showMessageDialog(new JLabel("Thông báo"), message);
+	}
+}

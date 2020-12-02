@@ -2,6 +2,9 @@ package models;
 
 import java.io.BufferedReader;
 import java.io.DataOutputStream;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
@@ -13,6 +16,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Scanner;
 import java.util.concurrent.CompletableFuture;
 
 import javax.net.ssl.HttpsURLConnection;
@@ -23,14 +27,14 @@ import org.json.JSONObject;
 
 public class API {
 	/**
-	 * Gửi request get đến url
+	 * Gửi get request
 	 * @param url
 	 * @return
 	 * @throws Exception
 	 */
-	public static CompletableFuture<String> sendGet(String url) throws Exception {
+	public CompletableFuture<ResponseModel> sendGet(String url) {
 		return CompletableFuture.supplyAsync(() -> {
-			String returnResponse = "Lỗi kết nối";
+			ResponseModel res = new ResponseModel();
             try {
             	URL obj = new URL(url);
         		HttpURLConnection con = (HttpURLConnection) obj.openConnection();
@@ -39,26 +43,32 @@ public class API {
         		con.setRequestProperty("User-Agent", "Mozilla/5.0");
         		BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream()));
         		String inputLine;
-        		StringBuffer response = new StringBuffer();
+        		StringBuffer resString = new StringBuffer();
         		while ((inputLine = in.readLine()) != null) {
-        			response.append(inputLine);
+        			resString.append(inputLine);
         		}
         		in.close(); // Đóng kết nối
-        		returnResponse = response.toString();
-            } catch (MalformedURLException e) {
+        		res.message = (String) resString.toString();
+        		res.status = true;
+            } catch (Exception e) {
 				e.printStackTrace();
-			} catch (ProtocolException e) {
-				e.printStackTrace();
-			} catch (IOException e) {
-				e.printStackTrace();
+				res.message = "Có lỗi xảy ra khi kết nối";
+        		res.status = false;
 			}
-			return returnResponse;
+			return res;
         });
 	}
 	
-	public static CompletableFuture<String> sendGet(String url, String token) throws Exception {
+	/**
+	 * Gửi get request với token
+	 * @param url
+	 * @param token
+	 * @return
+	 * @throws Exception
+	 */
+	public CompletableFuture<ResponseModel> sendGet(String url, String token) throws Exception {
 		return CompletableFuture.supplyAsync(() -> {
-			String returnResponse = "Lỗi kết nối";
+			ResponseModel res = new ResponseModel();
             try {
             	URL obj = new URL(url);
         		HttpURLConnection con = (HttpURLConnection) obj.openConnection();
@@ -69,26 +79,31 @@ public class API {
         		con.setRequestProperty("authorization", "Bearer "+token);
         		BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream()));
         		String inputLine;
-        		StringBuffer response = new StringBuffer();
+        		StringBuffer resString = new StringBuffer();
         		while ((inputLine = in.readLine()) != null) {
-        			response.append(inputLine);
+        			resString.append(inputLine);
         		}
         		in.close(); // Đóng kết nối
-        		returnResponse = response.toString();
-            } catch (MalformedURLException e) {
+        		res.message = resString.toString();
+        		res.status = true;
+            } catch (Exception e) {
 				e.printStackTrace();
-			} catch (ProtocolException e) {
-				e.printStackTrace();
-			} catch (IOException e) {
-				e.printStackTrace();
+				res.message = "Có lỗi xảy ra khi kết nối";
+        		res.status = false;
 			}
-			return returnResponse;
+			return res;
         });
 	}
 	
-	public static CompletableFuture<String> sendPost(String url, String urlParameters) throws Exception {
+	/**
+	 * Gửi post request
+	 * @param url
+	 * @param urlParameters
+	 * @return
+	 */
+	public CompletableFuture<ResponseModel> sendPost(String url, String urlParameters) {
 		return CompletableFuture.supplyAsync(() -> {
-			String returnResponse = "Lỗi kết nối";
+			ResponseModel res = new ResponseModel();
 			try {
 				URL obj = new URL(url);
 				HttpURLConnection con = (HttpURLConnection)obj.openConnection();
@@ -105,23 +120,33 @@ public class API {
 				BufferedReader in
 					= new BufferedReader(new InputStreamReader(con.getInputStream()));
 				String inputLine;
-				StringBuffer response = new StringBuffer();
+				StringBuffer resString = new StringBuffer();
 				while ((inputLine = in.readLine()) != null) {
-					response.append(inputLine);
+					resString.append(inputLine);
 				}
 				in.close();
-				returnResponse = response.toString();
-			}
-			catch(Exception e) {
+				res.message = resString.toString();
+				res.status = true;
+            } catch (Exception e) {
 				e.printStackTrace();
+				res.message = "Có lỗi xảy ra khi kết nối";
+        		res.status = false;
 			}
-			return returnResponse;
+			return res;
         });
 	}
 	
-	public static CompletableFuture<String> sendPost(String url, String urlParameters, String token) throws Exception {
+	/**
+	 * Gửi post request với token
+	 * @param url
+	 * @param urlParameters
+	 * @param token
+	 * @return
+	 * @throws Exception
+	 */
+	public CompletableFuture<ResponseModel> sendPost(String url, String urlParameters, String token) throws Exception {
 		return CompletableFuture.supplyAsync(() -> {
-			String returnResponse = "Lỗi kết nối";
+			ResponseModel res = new ResponseModel();
 			try {
 				URL obj = new URL(url);
 				HttpURLConnection con = (HttpURLConnection)obj.openConnection();
@@ -139,34 +164,46 @@ public class API {
 				BufferedReader in
 					= new BufferedReader(new InputStreamReader(con.getInputStream()));
 				String inputLine;
-				StringBuffer response = new StringBuffer();
+				StringBuffer resString = new StringBuffer();
 				while ((inputLine = in.readLine()) != null) {
-					response.append(inputLine);
+					resString.append(inputLine);
 				}
 				in.close();
-				returnResponse = response.toString();
-			}
-			catch(Exception e) {
+				res.message = resString.toString();
+				res.status = true;
+            } catch (Exception e) {
 				e.printStackTrace();
+				res.message = "Có lỗi xảy ra khi kết nối";
+        		res.status = false;
 			}
-			return returnResponse;
+			return res;
         });
 	}
 	
-	public static Map<String, Object> stringToMap(String jsonString) throws JSONException {
+	/**
+	 * Convert string to map
+	 * @param jsonString
+	 * @return
+	 * @throws JSONException
+	 */
+	public Map<String, Object> stringToMap(String jsonString) throws JSONException {
 		return jsonToMap(new JSONObject(jsonString));
 	}
 	
-	public static Map<String, Object> jsonToMap(JSONObject json) throws JSONException {
+	/**
+	 * Convert json to map
+	 * @param json
+	 * @return
+	 * @throws JSONException
+	 */
+	public Map<String, Object> jsonToMap(JSONObject json) throws JSONException {
 	    Map<String, Object> retMap = new HashMap<String, Object>();
-
 	    if(json != JSONObject.NULL) {
 	        retMap = toMap(json);
 	    }
 	    return retMap;
 	}
-
-	public static Map<String, Object> toMap(JSONObject object) throws JSONException {
+	public Map<String, Object> toMap(JSONObject object) throws JSONException {
 	    Map<String, Object> map = new HashMap<String, Object>();
 
 	    Iterator<String> keysItr = object.keys();
@@ -185,8 +222,7 @@ public class API {
 	    }
 	    return map;
 	}
-
-	public static List<Object> toList(JSONArray array) throws JSONException {
+	public List<Object> toList(JSONArray array) throws JSONException {
 	    List<Object> list = new ArrayList<Object>();
 	    for(int i = 0; i < array.length(); i++) {
 	        Object value = array.get(i);
@@ -202,28 +238,53 @@ public class API {
 	    return list;
 	}
 	
-//	public static CompletableFuture<String> createUser(User user) {
-//		try {
-//			sendPost("http://api.kaito.ninja/users", "username="+user.username+"&password="+user.password)
-//				.thenAccept(res -> {
-//					SwingAPI.alert(res);
-//				});
-//		} catch (Exception e1) {
-//			// TODO Auto-generated catch block
-//			e1.printStackTrace();
-//		}
-//	}
+	/**
+	 * Ghi string vào user_token
+	 * @param token
+	 * @return
+	 */
+	public boolean writeTokenFile(String token) {
+		// Đọc user token lấy token
+	    try {
+	    	//Bước 1: Tạo đối tượng luồng và liên kết nguồn dữ liệu
+	    	FileOutputStream fos = new FileOutputStream("user_token");
+	    	DataOutputStream dos = new DataOutputStream(fos);
+	    	//Bước 2: Ghi dữ liệu
+	    	dos.writeBytes(token);
+	    	//Bước 3: Đóng luồng
+	    	fos.close();
+	    	dos.close();
+	    	return true;
+	    } catch (IOException ex) {
+	    	ex.printStackTrace();
+	    	return false;
+	    }
+	}
 	
-//	public static CompletableFuture<String> updateUser(User user) {
-	//		try {
-	//		sendPost("http://api.kaito.ninja/users", "username="+user.username+"&password="+user.password)
-	//			.thenAccept(res -> {
-	//				SwingAPI.alert(res);
-	//			});
-	//	} catch (Exception e1) {
-	//		// TODO Auto-generated catch block
-	//		e1.printStackTrace();
-	//	}
-	//}
-	
+	/**
+	 * Đọc user token lấy token
+	 * @return Token string
+	 */
+	public String readTokenFile() {
+		String res = null;
+	    try {
+			FileInputStream fileInputStream = new FileInputStream("user_token");
+			Scanner scanner = new Scanner(fileInputStream);
+			
+			if(scanner.hasNextLine()) {
+				res += scanner.nextLine();
+			}
+			
+			// Đóng file
+			try {
+				scanner.close();
+                fileInputStream.close();
+            } catch (IOException ex) {
+            	ex.printStackTrace();
+            }
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		}
+		return res;
+	}
 }

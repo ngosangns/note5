@@ -1,0 +1,163 @@
+package views;
+import main.Main;
+import models.SwingAPI;
+import models.User;
+import controllers.MainController;
+
+import java.awt.Color;
+import java.awt.Font;
+import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.awt.font.TextAttribute;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.util.Map;
+
+import javax.swing.JButton;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JPasswordField;
+import javax.swing.JTextField;
+
+public class LoginPanel extends JPanel {
+	private JTextField username;
+	private JPasswordField password;
+	
+	public LoginPanel() {
+		super();
+		Main.frame.setTitle("Đăng nhập");
+		
+		// Username panel
+		JLabel usernameTitle = new JLabel("Tên đăng nhập");
+	    username = new JTextField();
+	    JPanel usernamePanel = new JPanel();
+	    usernamePanel.add(usernameTitle);
+	    usernamePanel.add(username);
+	    usernamePanel.setLayout(new GridLayout(1, 3));
+	    usernamePanel.setBackground(Color.white);
+	    
+	    // Password panel
+	    JLabel passwordTitle = new JLabel("Mật khẩu");
+	    password = new JPasswordField();
+	    JPanel passwordPanel = new JPanel();
+	    passwordPanel.add(passwordTitle);
+	    passwordPanel.add(password);
+	    passwordPanel.setLayout(new GridLayout(1, 3));
+	    passwordPanel.setBackground(Color.white);
+	    
+	    // Action panel
+	    // Hành động khi nhấn submit
+	    JButton submit = new JButton("Đăng nhập");
+	    submit.addActionListener(new ActionListener() {
+	    	public void actionPerformed(ActionEvent e) {
+	    		User user = new User();
+	    		user.username = username.getText();
+	    		user.password = String.valueOf(password.getPassword());
+	    		
+	    		// Kiểm tra đầu vào trống
+	    		if(user.username.length() == 0) {
+	    			SwingAPI.alert("Tên đăng nhập không được để trống");
+	    			return;
+	    		}
+	    		if(user.password.length() == 0) {
+	    			SwingAPI.alert("Mật khẩu không được để trống");
+	    			return;
+	    		}
+	    		
+	    		// Kiểm tra đầu vào hợp lệ
+	    		if(!user.username.matches("[0-9a-zA-Z._]+")) {
+	    			SwingAPI.alert("Tên đăng nhập chứa kí tự không hợp lệ");
+	    			return;
+	    		}
+	    		if(!user.password.matches("[0-9a-zA-Z._]+")) {
+	    			SwingAPI.alert("Mật khẩu chứa kí tự không hợp lệ");
+	    			return;
+	    		}
+	    		
+	    		String url = "http://www.google.com/search?q=mkyong";
+	    		
+	    		try {
+	    		  String USER_AGENT = "Mozilla/5.0";
+				  URL obj = new URL(url);
+				  HttpURLConnection con = (HttpURLConnection) obj.openConnection();
+				
+				  // optional default is GET
+				  con.setRequestMethod("GET");
+				
+				  //add request header
+				  con.setRequestProperty("User-Agent", USER_AGENT);
+				
+				  int responseCode = con.getResponseCode();
+				  System.out.println("\nSending 'GET' request to URL : " + url);
+				  System.out.println("Response Code : " + responseCode);
+				
+				  BufferedReader in = new BufferedReader(
+				          new InputStreamReader(con.getInputStream()));
+				  String inputLine;
+				  StringBuffer response = new StringBuffer();
+				
+				  while ((inputLine = in.readLine()) != null) {
+				   response.append(inputLine);
+				  }
+				  in.close();
+				
+				  //print result
+				  SwingAPI.alert(response.toString());
+	    		}
+	    		catch(Exception e2) {
+	    			
+	    		}
+	    		
+	    	}
+	    });
+	    JLabel signup = new JLabel("Đăng ký");
+	    signup.setForeground(Color.BLUE.darker());
+		// Set hành động của nút đăng nhập
+	    signup.addMouseListener(new MouseAdapter() {
+			// Click vào thì điều hướng đến trang đăng nhập
+			public void mouseClicked(MouseEvent e) {
+				MainController.invoke("RegisterPanel");
+		    }
+			// Di chuột vào sẽ hiện gạch chân
+			public void mouseEntered(MouseEvent e) {
+				Map attributes = signup.getFont().getAttributes();
+				attributes.put(TextAttribute.UNDERLINE, TextAttribute.UNDERLINE_ON);
+				signup.setFont(signup.getFont().deriveFont(attributes));
+		    }
+			// Ẩn gạch chân khi di chuột ra ngoài
+		    public void mouseExited(MouseEvent e) {
+		    	Map attributes = signup.getFont().getAttributes();
+				attributes.put(TextAttribute.UNDERLINE, -1);
+				signup.setFont(signup.getFont().deriveFont(attributes));
+		    }
+		});
+		JPanel actionPanel = new JPanel();
+		actionPanel.add(submit);
+		actionPanel.add(signup);
+		actionPanel.setBackground(Color.white);
+		
+		// Add child panel to parent panel
+		JLabel title = new JLabel("Đăng nhập", JLabel.CENTER);
+		title.setFont(new Font(title.getFont().getName(), Font.PLAIN, 18));
+		add(title);
+	    add(usernamePanel);
+	    add(passwordPanel);
+	    add(actionPanel);
+	    
+	    // Config parent panel
+		setBounds(
+			Main.frame.getPercentOfWidth(30), Main.frame.getPercentOfHeight(15),
+			Main.frame.getPercentOfWidth(40), Main.frame.getPercentOfHeight(25)
+		);
+		setBackground(Color.white);
+		// Set grid 4 dòng 1 cột
+		setLayout(new GridLayout(4, 1));
+	}
+}

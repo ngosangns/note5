@@ -1,63 +1,110 @@
 package models;
 
+import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 
 import org.json.JSONException;
 
-public class UserAPI extends API {
+public class UserAPI extends API implements ICRUD {
+	@Override
+	public void create() {}
 	/**
-	 * Trả về thông tin user lấy từ server thông qua token
-	 * @param token
-	 * @return
+	 * Đăng ký user trả về token.
+	 * @param user
+	 * @return ResponseModel res = {
+	 * 		status: true,
+	 * 		data: {
+	 * 			token: string
+	 * 		}
+	 * }
 	 */
-	public static CompletableFuture<User> getLoggingUserInfoFromToken(String token) {
+	public CompletableFuture<ResponseModel> create(UserModel user) {
 		return CompletableFuture.supplyAsync(() -> {
-			User user = new User();
-			user.token = token;
-			
+			ResponseModel res = new ResponseModel();
 			try {
-				sendGet("http://api.kaito.ninja/user", token)
-					.thenAccept(res -> {
-						try {
-							Map<String, Object> mapUser = stringToMap(res);
-							user.id = (String)mapUser.get("id");
-							user.username = (String)mapUser.get("name");
-						} catch (JSONException e) {
-							e.printStackTrace();
-						}
-					});
+				// Gửi request tạo user và nhận lại response
+				ResponseModel ress = sendPost("http://api.kaito.ninja/user",
+							"username="+user.username+"&password="+user.password).get();
+				
+				// Kiểm tra status, không có lỗi thì tiếp tục
+				if(ress.status) {
+					// Chuyển json trả về thành map
+					Map<String, Object> mapRess = stringToMap(ress.message);
+					// Nếu tồn tại token thì trả về
+					if(mapRess.containsKey("token")) {
+						res.status = true;
+						res.data = mapRess;
+					}
+					// Nếu không tồn tại token thì trả về lỗi
+					else {
+						res.status = false;
+						res.message = "Tạo tài khoản không thành công";
+					}
+				}
+				else {
+					res.status = false;
+					res.message = "Có lỗi xảy ra khi tạo tài khoản";
+				}
 			} catch (Exception e) {
 				e.printStackTrace();
+				res.status = false;
+				res.message = "Có lỗi xảy ra khi tạo tài khoản";
 			}
-			
-			return user;
+			return res;
 		});
 	}
 	
+	@Override
+	public void read() {}
 	/**
-	 * Đăng ký user trả về token
-	 * @param user
-	 * @return
+	 * Trả về thông tin user lấy từ server thông qua token.
+	 * @param token
+	 * @return ResponseModel res = {
+	 * 		status: true,
+	 * 		data: {
+	 * 			username: string,
+	 * 			password: string
+	 * 		}
+	 * }
 	 */
-	public static CompletableFuture<String> register(User user) {
+	public CompletableFuture<ResponseModel> read(String token) {
 		return CompletableFuture.supplyAsync(() -> {
-			String resToken;
+			ResponseModel res = new ResponseModel();
 			try {
-				sendPost("http://api.kaito.ninja/user", "username="+user.username+"&password="+user.password)
-					.thenAccept(res -> {
-						try {
-							Map<String, Object> mapRes = stringToMap(res);
-							resToken = (String)mapRes.get("token");
-						} catch (JSONException e) {
-							e.printStackTrace();
-						}
-					});
+				// Gửi request tạo user và nhận lại response
+				ResponseModel ress = sendGet("http://api.kaito.ninja/user", token).get();
+				// Kiểm tra status, không có lỗi thì tiếp tục
+				if(ress.status) {
+					// Chuyển json trả về thành map
+					Map<String, Object> mapRess = stringToMap(ress.message);
+					// Nếu tồn tại username thì trả về
+					if(mapRess.containsKey("username")) {
+						res.status = true;
+						res.data = mapRess;
+					}
+					// Nếu không tồn tại username thì trả về lỗi
+					else {
+						res.status = false;
+						res.message = "Lấy dữ liệu không thành công";
+					}
+				}
+				else {
+					res.status = false;
+					res.message = "Có lỗi xảy ra khi lấy dữ liệu";
+				}
 			} catch (Exception e) {
 				e.printStackTrace();
+				res.status = false;
+				res.message = "Có lỗi xảy ra khi lấy dữ liệu";
 			}
-			
-			return resToken;
+			return res;
 		});
 	}
+	
+	@Override
+	public void update() { }
+	
+	@Override
+	public void delete() { }
 }

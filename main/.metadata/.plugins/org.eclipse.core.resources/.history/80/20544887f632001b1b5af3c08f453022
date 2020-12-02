@@ -1,0 +1,53 @@
+package views;
+
+import java.awt.Color;
+
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+
+public class MainFrame extends JFrame {
+	public int width = 1000;
+	public int height = 500;
+	
+	public MainFrame() {
+		setSize(width, height);
+		setResizable(false);
+		setBackground(Color.white);
+		setLayout(null);
+		setJMenuBar(new MenuBar()); // Add MenuBar
+		setVisible(true);
+	}
+	
+	/**
+	 * Set tiêu đề cho frame
+	 */
+	@Override
+	public void setTitle(String title) {
+		super.setTitle("Note5 - " + title);
+	}
+	
+	/**
+	 * Hiển thị frame
+	 */
+	public void visible() {
+		setVisible(true);
+	}
+	
+	/**
+	 * Lấy chiều dài của frame dựa vào % đưa vào
+	 * @param percent
+	 * @return
+	 */
+	public int getPercentOfWidth(int percent) {
+		return (int)Math.round(width*percent/100);
+	}
+	
+	/**
+	 * Lấy chiều rộng của frame dựa vào % đưa vào
+	 * @param percent
+	 * @return
+	 */
+	public int getPercentOfHeight(int percent) {
+		return (int)Math.round(height*percent/100);
+	}
+}

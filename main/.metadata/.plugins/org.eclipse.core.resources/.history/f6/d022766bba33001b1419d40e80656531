@@ -1,0 +1,44 @@
+package models;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.ProtocolException;
+import java.net.URL;
+import java.util.concurrent.CompletableFuture;
+
+public class API {
+	public static CompletableFuture<String> sendGet(String url) throws Exception {
+		return CompletableFuture.supplyAsync(() -> {
+			String returnResponse = "Lỗi kết nối";
+            try {
+            	URL obj = new URL(url);
+        		HttpURLConnection con = (HttpURLConnection) obj.openConnection();
+        		// Optional default is GET
+        		con.setRequestMethod("GET");
+        		// Add request header
+        		con.setRequestProperty("User-Agent", "Mozilla/5.0");
+        		BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream()));
+        		String inputLine;
+        		StringBuffer response = new StringBuffer();
+        		while ((inputLine = in.readLine()) != null) {
+        			response.append(inputLine);
+        		}
+        		in.close(); // Đóng kết nối
+        		returnResponse = response.toString();
+            } catch (MalformedURLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (ProtocolException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			return returnResponse;
+        });
+	}
+}

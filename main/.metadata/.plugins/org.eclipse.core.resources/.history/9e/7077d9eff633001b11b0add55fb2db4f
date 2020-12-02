@@ -1,0 +1,17 @@
+package models;
+
+import java.util.concurrent.CompletableFuture;
+
+public class UserAPI extends API {
+	public static CompletableFuture<User> getLoggingUserInfoFromToken(String token) {
+		try {
+			sendGet("http://api.kaito.ninja/user", token)
+				.thenAccept(res -> {
+					SwingAPI.alert(res);
+				});
+		} catch (Exception e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+	}
+}

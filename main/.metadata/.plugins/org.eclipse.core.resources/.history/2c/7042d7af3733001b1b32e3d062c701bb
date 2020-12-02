@@ -1,0 +1,14 @@
+package models;
+
+import javax.swing.JOptionPane;
+
+public class SwingAPI {
+	JOptionPane popup;
+	public SwingAPI() {
+		popup = new JOptionPane();
+	}
+	
+	public void showAlert(String message) {
+		popup.showMessageDialog(null, message);
+	}
+}

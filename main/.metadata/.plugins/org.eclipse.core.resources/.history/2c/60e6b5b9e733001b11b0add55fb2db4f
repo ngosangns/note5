@@ -1,0 +1,16 @@
+package views;
+
+import javax.swing.JPanel;
+
+import main.Main;
+import net.miginfocom.swing.MigLayout;
+
+public class LoginView extends JPanel {
+	public LoginView() {
+		super();
+		setLayout(new MigLayout("", "[grow][::250px,grow][grow]", "[grow][::300px,grow][grow]"));
+		Main.frame.setTitle("Đăng nhập");
+		
+		
+	}
+}

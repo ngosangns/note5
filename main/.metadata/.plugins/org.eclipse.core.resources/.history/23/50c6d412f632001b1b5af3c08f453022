@@ -1,0 +1,17 @@
+package views;
+
+import javax.swing.JMenu;
+import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
+
+public class MenuBar extends JMenuBar {
+	JMenu account = new JMenu("Tài khoản");
+	JMenuItem login = new JMenuItem("Đăng nhập");
+	JMenuItem register = new JMenuItem("Đăng ký");
+	JMenuItem changeInfo = new JMenuItem("Cập nhật thông tin");
+	
+	public MenuBar() {
+		super();
+		
+	}
+}

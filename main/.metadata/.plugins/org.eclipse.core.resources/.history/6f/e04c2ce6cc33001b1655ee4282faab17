@@ -1,0 +1,14 @@
+package views;
+
+import javax.swing.JPanel;
+
+public class MainBoardView extends JPanel {
+
+	/**
+	 * Create the panel.
+	 */
+	public MainBoardView() {
+
+	}
+
+}

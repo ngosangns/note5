@@ -1,5 +1,5 @@
 package views;
-import models.Board;
+import models.BoardModel;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -11,11 +11,11 @@ import javax.swing.JPopupMenu;
 public class BoardContextMenu extends JPopupMenu {
 	public JMenuItem rename = new JMenuItem("Sửa");
 	public JMenuItem delete = new JMenuItem("Xóa");
-	private Board board;
+	private BoardModel board;
 	
 	private String temp_res;
 	
-	BoardContextMenu(Board inBoard) {
+	BoardContextMenu(BoardModel inBoard) {
 		board = inBoard;
 		rename.addActionListener(new ActionListener() {
 		    public void actionPerformed(ActionEvent e) {

@@ -1,0 +1,153 @@
+package views;
+import controllers.MainController;
+import main.Main;
+import models.API;
+import models.SwingAPI;
+import models.User;
+
+import java.awt.Color;
+import java.awt.Font;
+import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.awt.font.TextAttribute;
+
+import javax.swing.JButton;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JPasswordField;
+import javax.swing.JTextField;
+import java.util.Map;
+
+public class RegisterPanel extends JPanel {
+	private JTextField username;
+	private JPasswordField password;
+	private JPasswordField rePassword;
+	
+	public RegisterPanel() {
+		super();
+		Main.frame.setTitle("Đăng ký");
+		Main.frame.setBackground(Color.white);
+		
+		// Username panel
+		JLabel usernameTitle = new JLabel("Tên đăng nhập");
+	    username = new JTextField();
+	    JPanel usernamePanel = new JPanel();
+	    usernamePanel.add(usernameTitle);
+	    usernamePanel.add(username);
+	    usernamePanel.setLayout(new GridLayout(1, 2));
+	    usernamePanel.setBackground(Color.white);
+	    
+	    // Password panel
+	    JLabel passwordTitle = new JLabel("Mật khẩu");
+	    password = new JPasswordField();
+	    JPanel passwordPanel = new JPanel();
+	    passwordPanel.add(passwordTitle);
+	    passwordPanel.add(password);
+	    passwordPanel.setLayout(new GridLayout(1, 2));
+	    passwordPanel.setBackground(Color.white);
+	    
+	    // Repassword panel
+	    JLabel rePasswordTitle = new JLabel("Nhập lại mật khẩu");
+	    rePassword = new JPasswordField();
+	    JPanel rePasswordPanel = new JPanel();
+	    rePasswordPanel.add(rePasswordTitle);
+	    rePasswordPanel.add(rePassword);
+	    rePasswordPanel.setLayout(new GridLayout(1, 2));
+	    rePasswordPanel.setBackground(Color.white);
+	    
+	    // Action panel
+	    JButton submit = new JButton("Đăng ký");
+	    submit.addActionListener(new ActionListener() {
+	    	public void actionPerformed(ActionEvent e) {
+	    		User user = new User();
+	    		user.username = username.getText();
+	    		user.password = String.valueOf(password.getPassword());
+	    		
+	    		// Kiểm tra đầu vào có trống không
+	    		if(user.username.length() == 0) {
+	    			SwingAPI.alert("Tên đăng nhập không được để trống");
+	    			return;
+	    		}
+	    		if(user.password.length() == 0) {
+	    			SwingAPI.alert("Mật khẩu không được để trống");
+	    			return;
+	    		}
+	    		
+	    		// Kiểm tra đầu vào hợp lệ không
+	    		if(!user.username.matches("[0-9a-zA-Z._]+")) {
+	    			SwingAPI.alert("Tên đăng nhập chứa kí tự không hợp lệ");
+	    			return;
+	    		}
+	    		if(!user.password.matches("[0-9a-zA-Z._]+")) {
+	    			SwingAPI.alert("Mật khẩu chứa kí tự không hợp lệ");
+	    			return;
+	    		}
+	    		
+	    		String tempPassword = String.valueOf(password.getPassword());
+	    		String TempRePassword = String.valueOf(rePassword.getPassword());
+	    		
+	    		// Kiểm tra nhập lại mật khẩu không trùng khớp
+	    		if(tempPassword != TempRePassword) {
+	    			
+	    		}
+	    		
+	    		// Gửi request đăng nhập
+	    		try {
+					API.sendPost("http://api.kaito.ninja/login", "username="+user.username+"&password="+user.password)
+						.thenAccept(res -> {
+							SwingAPI.alert(res);
+						});
+				} catch (Exception e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+	    		
+	    	}
+	    });
+		JLabel login = new JLabel("Đăng nhập");
+		login.setForeground(Color.BLUE.darker());
+		// Set hành động của nút đăng nhập
+		login.addMouseListener(new MouseAdapter() {
+			// Click vào thì điều hướng đến trang đăng nhập
+			public void mouseClicked(MouseEvent e) {
+				MainController.invoke("LoginPanel");
+		    }
+			// Di chuột vào sẽ hiện gạch chân
+			public void mouseEntered(MouseEvent e) {
+				Map attributes = login.getFont().getAttributes();
+				attributes.put(TextAttribute.UNDERLINE, TextAttribute.UNDERLINE_ON);
+				login.setFont(login.getFont().deriveFont(attributes));
+		    }
+			// Ẩn gạch chân khi di chuột ra ngoài
+		    public void mouseExited(MouseEvent e) {
+		    	Map attributes = login.getFont().getAttributes();
+				attributes.put(TextAttribute.UNDERLINE, -1);
+				login.setFont(login.getFont().deriveFont(attributes));
+		    }
+		});
+		JPanel actionPanel = new JPanel();
+		actionPanel.add(submit);
+		actionPanel.add(login);
+		actionPanel.setBackground(Color.white);
+		    
+		// Add child panel to parent panel
+		JLabel title = new JLabel("Đăng ký", JLabel.CENTER);
+		title.setFont(new Font(title.getFont().getName(), Font.PLAIN, 18));
+		add(title);
+	    add(usernamePanel);
+	    add(passwordPanel);
+	    add(rePasswordPanel);
+	    add(actionPanel);
+	    
+	    // Config parent panel
+		setBounds(
+			Main.frame.getPercentOfWidth(30), Main.frame.getPercentOfHeight(15),
+			Main.frame.getPercentOfWidth(40), Main.frame.getPercentOfHeight(31)
+		);
+		setBackground(Color.white);
+		setLayout(new GridLayout(5, 1));
+	}
+}

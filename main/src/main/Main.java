@@ -5,19 +5,20 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.Scanner;
 
-import models.User;
+import models.LoggingUserModel;
+import models.UserModel;
 import views.MainFrame;
 
 public class Main {
 	public static MainFrame frame;
-	public static User logging_user;
+	public static LoggingUserModel logging_user;
 	
 	public static void main(String[] args) {
 		// Dựng frame
 		frame = new MainFrame();
 		
 		// Tạo mới logging user
-		logging_user = new User();
+		logging_user = new LoggingUserModel();
 		logging_user.token = "";
 		
 		// Tạo file chứa user token nếu chưa tồn tại
@@ -48,8 +49,5 @@ public class Main {
 		}
 	    
 		controllers.MainController.invoke("RegisterView");
-		
-//		test asd = new test();
-//		asd.setVisible(true);
 	}
 }

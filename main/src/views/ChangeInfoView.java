@@ -10,7 +10,7 @@ import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 
 import main.Main;
-import models.User;
+import models.UserModel;
 import net.miginfocom.swing.MigLayout;
 
 public class ChangeInfoView extends JPanel {
@@ -45,7 +45,7 @@ public class ChangeInfoView extends JPanel {
 			public void actionPerformed(ActionEvent e) {
 				String passwordText = String.valueOf(password.getPassword());
 				String rePasswordText = String.valueOf(password.getPassword());
-				User user = new User();
+				UserModel user = new UserModel();
 	    		user.username = username.getText();
 	    		user.password = String.valueOf(password.getPassword());
 			}

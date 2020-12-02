@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<qualifiedTypeNameHistroy>
+    <fullyQualifiedTypeName name="java.sql.Date"/>
+    <fullyQualifiedTypeName name="java.awt.Font"/>
+    <fullyQualifiedTypeName name="java.awt.event.MouseEvent"/>
+    <fullyQualifiedTypeName name="java.awt.event.MouseAdapter"/>
+    <fullyQualifiedTypeName name="java.awt.font.TextAttribute"/>
+    <fullyQualifiedTypeName name="java.awt.Color"/>
+    <fullyQualifiedTypeName name="com.sun.java.util.jar.pack.Package.File"/>
+    <fullyQualifiedTypeName name="java.io.File"/>
+    <fullyQualifiedTypeName name="models.User"/>
+    <fullyQualifiedTypeName name="javax.swing.JOptionPane"/>
+    <fullyQualifiedTypeName name="models.SwingAPI"/>
+    <fullyQualifiedTypeName name="javax.swing.JLabel"/>
+    <fullyQualifiedTypeName name="org.apache.hc.client5.http.fluent.Response"/>
+    <fullyQualifiedTypeName name="org.apache.hc.client5.http.fluent.Request"/>
+    <fullyQualifiedTypeName name="java.net.http.HttpResponse"/>
+    <fullyQualifiedTypeName name="org.apache.hc.core5.http.HttpResponse"/>
+    <fullyQualifiedTypeName name="org.apache.hc.core5.http.Header"/>
+    <fullyQualifiedTypeName name="sun.security.util.IOUtils"/>
+    <fullyQualifiedTypeName name="org.apache.commons.io.IOUtils"/>
+    <fullyQualifiedTypeName name="org.apache.hc.core5.http.HttpEntity"/>
+    <fullyQualifiedTypeName name="org.apache.hc.client5.http.impl.classic.CloseableHttpClient"/>
+    <fullyQualifiedTypeName name="org.apache.hc.core5.http.io.HttpClientResponseHandler"/>
+    <fullyQualifiedTypeName name="org.apache.hc.client5.http.classic.methods.HttpGet"/>
+    <fullyQualifiedTypeName name="org.apache.hc.client5.http.classic.HttpClient"/>
+    <fullyQualifiedTypeName name="org.apache.hc.client5.http.impl.classic.HttpClients"/>
+    <fullyQualifiedTypeName name="java.net.URL"/>
+    <fullyQualifiedTypeName name="java.net.HttpURLConnection"/>
+    <fullyQualifiedTypeName name="java.io.BufferedReader"/>
+    <fullyQualifiedTypeName name="java.io.InputStreamReader"/>
+    <fullyQualifiedTypeName name="models.API"/>
+    <fullyQualifiedTypeName name="java.util.concurrent.CompletableFuture"/>
+    <fullyQualifiedTypeName name="java.util.concurrent.TimeUnit"/>
+    <fullyQualifiedTypeName name="javax.net.ssl.HttpsURLConnection"/>
+    <fullyQualifiedTypeName name="java.io.FileOutputStream"/>
+    <fullyQualifiedTypeName name="java.io.DataOutputStream"/>
+</qualifiedTypeNameHistroy>

@@ -1,0 +1,27 @@
+package views;
+
+import java.awt.Button;
+import java.awt.Dimension;
+import java.awt.Rectangle;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+
+import javax.swing.AbstractListModel;
+import javax.swing.JList;
+import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
+import javax.swing.JPanel;
+import javax.swing.JPopupMenu;
+import javax.swing.JTextField;
+import javax.swing.SwingUtilities;
+
+import main.Main;
+import net.miginfocom.swing.MigLayout;
+
+public class BoardView extends JPanel {
+	public BoardView() {
+		super();
+		setLayout(new MigLayout("insets 5", "[250px][grow]", "[grow]"));
+		Main.frame.setTitle("Bảng");
+	}
+}

@@ -1,0 +1,14 @@
+package views;
+
+import javax.swing.JPanel;
+
+import main.Main;
+
+public class LoginView extends JPanel {
+	public LoginView() {
+		super();
+		Main.frame.setTitle("Đăng nhập");
+		
+		
+	}
+}

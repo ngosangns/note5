@@ -1,0 +1,10 @@
+package views;
+
+import javax.swing.JPanel;
+
+public class ChangeInfoView extends JPanel {
+	public ChangeInfoView() {
+		super();
+		
+	}
+}

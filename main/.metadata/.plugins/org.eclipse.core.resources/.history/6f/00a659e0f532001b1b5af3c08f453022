@@ -1,0 +1,13 @@
+package views;
+
+import javax.swing.JMenu;
+import javax.swing.JMenuBar;
+
+public class MenuBar extends JMenuBar {
+	JMenu account = new JMenu("Tài khoản");
+	
+	public MenuBar() {
+		super();
+		
+	}
+}

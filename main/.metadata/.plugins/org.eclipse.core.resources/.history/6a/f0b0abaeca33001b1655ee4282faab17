@@ -1,0 +1,75 @@
+package views;
+
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JList;
+import javax.swing.JPanel;
+import javax.swing.JTextField;
+import javax.swing.border.EmptyBorder;
+import javax.swing.border.LineBorder;
+
+public class MainBoardPanel extends JPanel {
+	private JTextField txtAddBoard;
+	private JTextField txtaddNote;
+	
+	public MainBoardPanel() {
+		super();
+		setBorder(new EmptyBorder(5, 5, 5, 5));
+		setLayout(null);
+		
+		JPanel panelBoard = new JPanel();
+		panelBoard.setBorder(new LineBorder(new Color(0, 0, 0)));
+		panelBoard.setBounds(33, 54, 275, 379);
+		add(panelBoard);
+		panelBoard.setLayout(null);
+		
+		txtAddBoard = new JTextField();
+		txtAddBoard.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+			}
+		});
+		txtAddBoard.setBounds(18, 11, 198, 19);
+		panelBoard.add(txtAddBoard);
+		txtAddBoard.setColumns(10);
+		
+		JButton btnAddNote_1 = new JButton("+");
+		btnAddNote_1.setBounds(219, 11, 46, 19);
+		panelBoard.add(btnAddNote_1);
+		
+		JList list = new JList();
+		list.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+					
+			}
+		});
+		list.setBounds(18, 40, 247, 312);
+		panelBoard.add(list);
+		
+		JPanel panelNote = new JPanel();
+		panelNote.setBorder(new LineBorder(new Color(0, 0, 0)));
+		panelNote.setBounds(329, 52, 632, 385);
+		add(panelNote);
+		panelNote.setLayout(null);
+		
+		txtaddNote = new JTextField();
+		txtaddNote.setBounds(30, 10, 531, 19);
+		txtaddNote.setColumns(10);
+		panelNote.add(txtaddNote);
+		
+		JButton btnAddNote = new JButton("+");
+		btnAddNote.setBounds(571, 9, 46, 21);
+		panelNote.add(btnAddNote);
+		
+		JList list_1 = new JList();
+		list_1.setBounds(27, 45, 590, 312);
+		panelNote.add(list_1);
+	}
+}
