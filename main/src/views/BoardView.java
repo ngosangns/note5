@@ -17,19 +17,34 @@ import javax.swing.JPopupMenu;
 import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.lang.reflect.Field;
 import main.Main;
 import models.BoardModel;
+import models.api.BoardAPI;
+import models.library.NoteLibrary;
 import net.miginfocom.swing.MigLayout;
 import javax.swing.JButton;
+
 
 public class BoardView extends JPanel {
 	private JTextField addBoardTextField;
 	private JTextField addNoteTextField;
 	
-	private BoardModel[] boards = {};
+	private List<BoardModel> boards = new ArrayList<BoardModel>();
+	private List<String> boardsName = new ArrayList<String>();
 	
 	public BoardView() {
 		super();
+		
 		setLayout(new MigLayout("insets 5", "[250px][grow]", "[20px][grow]"));
 		
 		JPanel addBoardPanel = new JPanel();
@@ -57,15 +72,6 @@ public class BoardView extends JPanel {
 		addNotePanel.add(addNoteButton, "cell 1 0");
 		
 		JList boardList = new JList();
-		boardList.setModel(new AbstractListModel() {
-			String[] values = new String[] {"Board 1", "Board 2"};
-			public int getSize() {
-				return values.length;
-			}
-			public Object getElementAt(int index) {
-				return values[index];
-			}
-		});
 		boardList.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mousePressed(MouseEvent e) {
@@ -92,5 +98,43 @@ public class BoardView extends JPanel {
 		});
 		add(noteList, "cell 1 1,grow");
 		Main.frame.setTitle("Bảng");
+
+		// Lấy dữ liệu boards
+		BoardAPI.read().thenAccept(res -> {
+			JSONObject resJSON = (JSONObject) res.data.get("boards");
+			Iterator<String> resJSONkeys = resJSON.keys();
+			try {
+				while(resJSONkeys.hasNext()) {
+				    String key = resJSONkeys.next();
+			    	JSONObject ijsonObject = (JSONObject) resJSON.get(key);
+			    	BoardModel iboard = new BoardModel();
+			    	iboard.id = String.valueOf(ijsonObject.get("ID"));
+			    	iboard.name = String.valueOf(ijsonObject.get("NAME"));
+			    	iboard.date_created = String.valueOf(ijsonObject.get("created_at"));
+			    	iboard.user_id = String.valueOf(ijsonObject.get("USER_ID"));
+			    	boards.add(iboard);
+			    	boardsName.add(iboard.name);
+				}
+			}
+			catch (Exception e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+			boardList.setModel(new AbstractListModel() {
+				String[] values;
+				
+				public int getSize() {
+					values = new String[boardsName.size()];
+					boardsName.toArray(values);
+					return boards.size();
+				}
+				public Object getElementAt(int index) {
+					return values[index];
+				}
+			});
+			
+			revalidate();
+			repaint();
+		});
 	}
 }

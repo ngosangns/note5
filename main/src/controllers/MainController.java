@@ -1,13 +1,15 @@
 package controllers;
 import views.*;
 import main.Main;
+import models.api.UserAPI;
+import models.library.NoteLibrary;
 
 import javax.swing.JPanel;
 
 public class MainController {
 	// Current panel
 	private static JPanel cPanel;
-	
+
 	public static void invoke(String pageName) {
 		// Remove old panel
 		if(cPanel != null)
@@ -16,26 +18,45 @@ public class MainController {
 		// Set new panel
 		switch(pageName) {
 			case "LoginView": {
+				// Nếu đã đăng nhập thì direct về board
+				// Nếu chưa thì tiếp tục
+				if(UserAPI.checkLogin()) {
+					MainController.invoke("BoardView");
+					return;
+				}
 				cPanel = new LoginView();
 				Main.frame.getContentPane().add(cPanel);
 				break;
 			}
 			case "RegisterView": {
-				// Kiểm tra tồn tại token
-				// Nếu có thì lấy thông tin user
-				if(Main.logging_user.token.length() > 0) {
-					
+				// Nếu đã đăng nhập thì direct về board
+				// Nếu chưa thì tiếp tục
+				if(UserAPI.checkLogin()) {
+					MainController.invoke("BoardView");
+					return;
 				}
 				cPanel = new RegisterView();
 				Main.frame.getContentPane().add(cPanel);
 				break;
 			}
 			case "ChangeInfoView": {
+				// Nếu đã đăng nhập thì tiếp tục
+				// Nếu chưa thì direct về login
+				if(!UserAPI.checkLogin()) {
+					MainController.invoke("LoginView");
+					return;
+				}
 				cPanel = new ChangeInfoView();
 				Main.frame.getContentPane().add(cPanel);
 				break;
 			}
 			case "BoardView": {
+				// Nếu đã đăng nhập thì tiếp tục
+				// Nếu chưa thì direct về login
+				if(!UserAPI.checkLogin()) {
+					MainController.invoke("LoginView");
+					return;
+				}
 				cPanel = new BoardView();
 				Main.frame.getContentPane().add(cPanel);
 				break;

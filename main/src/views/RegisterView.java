@@ -8,10 +8,11 @@ import javax.swing.JTextField;
 
 import controllers.MainController;
 import main.Main;
-import models.API;
-import models.SwingAPI;
-import models.UserAPI;
+import models.LoggingUserModel;
 import models.UserModel;
+import models.api.UserAPI;
+import models.library.NoteLibrary;
+import models.library.SwingLibrary;
 import net.miginfocom.swing.MigLayout;
 import java.awt.event.ActionListener;
 import java.util.concurrent.CompletableFuture;
@@ -66,27 +67,38 @@ public class RegisterView extends JPanel {
 	    		
 				// Kiểm tra đầu vào trống
 	    		if(user.username.length() == 0 || passwordText.length() == 0 || rePasswordText.length() == 0) {
-	    			SwingAPI.alert("Vui lòng nhập đầy đủ các trường");
+	    			SwingLibrary.alert("Vui lòng nhập đầy đủ các trường");
 	    			return;
 	    		}
 	    		
 	    		// Kiểm tra đầu vào hợp lệ
 	    		if(!user.username.matches("[0-9a-zA-Z._]+") || !passwordText.matches("[0-9a-zA-Z._]+") || !rePasswordText.matches("[0-9a-zA-Z._]+")) {
-	    			SwingAPI.alert("Trường chứa kí tự không hợp lệ");
+	    			SwingLibrary.alert("Trường chứa kí tự không hợp lệ");
 	    			return;
 	    		}
 	    		
 	    		// Kiểm tra nhập lại mật khẩu
 	    		if(!passwordText.equals(rePasswordText)) {
-	    			SwingAPI.alert("Mật khẩu không trùng khớp");
+	    			SwingLibrary.alert("Mật khẩu không trùng khớp");
 	    			return;
 	    		}
 	    		
-//	    		UserAPI.create(user).thenAccept(resUser -> {
-//	    			Main.logging_user = resUser;
-//	    			API.writeTokenFile(resUser.token);
-//	    			MainController.invoke("BoardView");
-//	    		});
+	    		UserAPI.create(user).thenAccept(res -> {
+	    			// Nếu tạo user thành công
+	    			if(res.status) {
+	    				// Thêm thông tin vào logging user (đăng nhập)
+	    				Main.logging_user = new LoggingUserModel();
+	    				Main.logging_user.username = user.username;
+	    				Main.logging_user.token = (String) res.data.get("token");
+	    				// Ghi token vào user_token
+	    				NoteLibrary.writeTokenFile((String) res.data.get("token"));
+	    				// Direct đến trang board
+	    				MainController.invoke("BoardView");
+	    			}
+	    			else {
+	    				SwingLibrary.alert(res.message);
+	    			}
+	    		});
 	    		
 			}
 		});

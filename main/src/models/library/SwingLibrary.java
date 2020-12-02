@@ -1,8 +1,8 @@
-package models;
+package models.library;
 
 import javax.swing.JOptionPane;
 
-public class SwingAPI {
+public class SwingLibrary {
 	public static void alert(String message) {
 		JOptionPane.showMessageDialog(null, message);
 	}
