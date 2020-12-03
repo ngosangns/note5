@@ -48,7 +48,8 @@ public class BoardAPI {
 						    			String.valueOf(ijsonObject.get("ID")),
 						    			String.valueOf(ijsonObject.get("NAME")),
 						    			String.valueOf(ijsonObject.get("created_at")),
-						    			String.valueOf(ijsonObject.get("USER_ID")));
+						    			String.valueOf(ijsonObject.get("USER_ID")),
+						    			String.valueOf(ijsonObject.get("COLOR")));
 						    	boards.add(iboard);
 							}
 						}
@@ -139,6 +140,46 @@ public class BoardAPI {
 			try {
 				// Gửi request cap nhat board
 				ResponseModel ress = MainLibrary.sendPost("http://api.kaito.ninja/board/"+board.id+"/put", "name="+board.name, Main.logging_user.token).get();
+				// Kiểm tra status, không có lỗi thì tiếp tục
+				if(ress.status) {
+					JSONObject resJSON = new JSONObject(String.valueOf(ress.data.get("response")));
+					// Nếu không tồn tại thông báo lỗi
+					if(!resJSON.has("message")) {
+						res.status = true;
+					}
+					// Nếu tồn tại thông báo lỗi
+					else {
+						res.status = false;
+						res.message = resJSON.getString("message");
+					}
+				}
+				else {
+					res.status = false;
+					res.message = ress.message;
+				}
+			} catch (Exception e) {
+				e.printStackTrace();
+				res.status = false;
+				res.message = "Có lỗi xảy ra";
+			}
+			return res;
+		});
+	}
+	
+	/**
+	 * Cap nhat mau board
+	 * @return ResponseModel {
+	 * 		status: ...,
+	 * 		message: ...,
+	 * 		data: {}
+	 * }
+	 */
+	public static CompletableFuture<ResponseModel> updateColor(BoardModel board) {
+		return CompletableFuture.supplyAsync(() -> {
+			ResponseModel res = new ResponseModel();
+			try {
+				// Gửi request cap nhat board
+				ResponseModel ress = MainLibrary.sendPost("http://api.kaito.ninja/board/"+board.id+"/color/put", "color="+board.color, Main.logging_user.token).get();
 				// Kiểm tra status, không có lỗi thì tiếp tục
 				if(ress.status) {
 					JSONObject resJSON = new JSONObject(String.valueOf(ress.data.get("response")));

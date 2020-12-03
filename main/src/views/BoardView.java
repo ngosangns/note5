@@ -1,10 +1,13 @@
 package views;
 
 import java.awt.Button;
+import java.awt.Color;
+import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
+import javax.swing.DefaultListCellRenderer;
 import javax.swing.DefaultListModel;
 import javax.swing.JList;
 import javax.swing.JPanel;
@@ -14,7 +17,10 @@ import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+
 import main.Main;
 import models.BoardModel;
 import models.NoteModel;
@@ -40,6 +46,14 @@ public class BoardView extends JPanel {
 	JList<NoteModel> noteList;
 	
 	private BoardModel cboard;
+	
+	private Map<String, Color> colorMap = new HashMap<String, Color>() {{
+		put("red", new Color(243, 114, 120));
+		put("orange", new Color(255, 201, 14));
+		put("yellow", new Color(255, 242, 0));
+		put("green", new Color(100, 225, 137));
+		put("blue", new Color(62, 197, 255));
+	}};
 	
 	@SuppressWarnings("unchecked")
 	public BoardView() {
@@ -90,7 +104,7 @@ public class BoardView extends JPanel {
 					boardList.requestFocus();
 					boardList.setSelectedIndex(temp_getBoardIndex);
 					// Hien popup
-					JPopupMenu popupMenu = new BoardContextMenu(boards, temp_getBoardIndex, boardListModel);
+					JPopupMenu popupMenu = new BoardContextMenu(boards, temp_getBoardIndex, cboard, noteListModel, boardListModel);
 					popupMenu.show(e.getComponent(), e.getX(), e.getY());
 	            }
 				// Set hanh dong khi click chuot trai
@@ -120,6 +134,28 @@ public class BoardView extends JPanel {
 					JPopupMenu popupMenu = new NoteContextMenu(cboard.notes, temp_getNoteIndex, noteListModel);
 					popupMenu.show(e.getComponent(), e.getX(), e.getY());
 	            }
+			}
+		});
+		
+		// Set màu cho board
+		boardList.setCellRenderer(new DefaultListCellRenderer() {
+			@Override
+			public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
+				Component c = super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
+				if(colorMap.containsKey(boards.get(index).color))
+					c.setBackground(colorMap.get(boards.get(index).color));
+				return c;
+			}
+		});
+				
+		// Set màu cho note
+		noteList.setCellRenderer(new DefaultListCellRenderer() {
+			@Override
+			public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
+				Component c = super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
+				if(colorMap.containsKey(cboard.notes.get(index).color))
+					c.setBackground(colorMap.get(cboard.notes.get(index).color));
+				return c;
 			}
 		});
 		
@@ -202,6 +238,8 @@ public class BoardView extends JPanel {
 		// Chèn hành động thêm note cho nút
 		addNoteButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				// Kiem tra xem da chon board chua
+				if(cboard == null) return;
 				// Lay gia tri bang hien tai
 				BoardModel progBoard = cboard;
 				NoteModel model = new NoteModel(addNoteTextField.getText());
@@ -210,28 +248,26 @@ public class BoardView extends JPanel {
 				// Reset text trong o nhap
 				addNoteTextField.setText(null);
 				// Cap nhat len server
-				if(cboard != null) {
-					NoteAPI.create(model, cboard.id).thenAccept(res -> {
-						// Neu co loi thi hien popup loi
-						if(!res.status) {
-							SwingLibrary.alert(res.message);
+				NoteAPI.create(model, cboard.id).thenAccept(res -> {
+					// Neu co loi thi hien popup loi
+					if(!res.status) {
+						SwingLibrary.alert(res.message);
+					}
+					// Nếu không có lỗi thì thôi
+					else {
+						// Them thong tin duoc tao tren server vao board
+						model.id = String.valueOf(res.data.get("id"));
+						model.date_created = String.valueOf(res.data.get("date_created"));
+						model.board_id = String.valueOf(res.data.get("board_id"));
+						// Them note moi vao board
+						progBoard.notes.add(model);
+						// Kiem tra neu bang hien tai dang bat thi cap nhat lai list note
+						if(progBoard == cboard) {
+							noteListModel.clear();
+							noteListModel.addAll(cboard.notes);
 						}
-						// Nếu không có lỗi thì thôi
-						else {
-							// Them thong tin duoc tao tren server vao board
-							model.id = String.valueOf(res.data.get("id"));
-							model.date_created = String.valueOf(res.data.get("date_created"));
-							model.board_id = String.valueOf(res.data.get("board_id"));
-							// Them note moi vao board
-							progBoard.notes.add(model);
-							// Kiem tra neu bang hien tai dang bat thi cap nhat lai list note
-							if(progBoard == cboard) {
-								noteListModel.clear();
-								noteListModel.addAll(cboard.notes);
-							}
-						}
-					});
-				}
+					}
+				});
 			}
 		});
 	}

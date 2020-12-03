@@ -48,7 +48,8 @@ public class NoteAPI {
 						    			String.valueOf(ijsonObject.get("ID")),
 						    			String.valueOf(ijsonObject.get("NAME")),
 						    			String.valueOf(ijsonObject.get("created_at")),
-						    			String.valueOf(ijsonObject.get("BOARD_ID")));
+						    			String.valueOf(ijsonObject.get("BOARD_ID")),
+						    			String.valueOf(ijsonObject.get("COLOR")));
 						    	notes.add(imodel);
 							}
 						}
@@ -126,11 +127,10 @@ public class NoteAPI {
 	}
 	
 	/**
-	 * Cap nhat board
+	 * Cap nhat note
 	 * @return ResponseModel {
 	 * 		status: ...,
-	 * 		message: ...,
-	 * 		data: {}
+	 * 		message: ...
 	 * }
 	 */
 	public static CompletableFuture<ResponseModel> update(NoteModel note) {
@@ -164,9 +164,48 @@ public class NoteAPI {
 			return res;
 		});
 	}
+	
+	/**
+	 * Cap nhat mau note
+	 * @return ResponseModel {
+	 * 		status: ...,
+	 * 		message: ...
+	 * }
+	 */
+	public static CompletableFuture<ResponseModel> updateColor(NoteModel note) {
+		return CompletableFuture.supplyAsync(() -> {
+			ResponseModel res = new ResponseModel();
+			try {
+				// Gửi request cap nhat board
+				ResponseModel ress = MainLibrary.sendPost("http://api.kaito.ninja/notes/"+note.board_id+"/"+note.id+"/color/put", "color="+note.color, Main.logging_user.token).get();
+				// Kiểm tra status, không có lỗi thì tiếp tục
+				if(ress.status) {
+					JSONObject resJSON = new JSONObject(String.valueOf(ress.data.get("response")));
+					// Nếu không tồn tại thông báo lỗi
+					if(!resJSON.has("message")) {
+						res.status = true;
+					}
+					// Nếu tồn tại thông báo lỗi
+					else {
+						res.status = false;
+						res.message = resJSON.getString("message");
+					}
+				}
+				else {
+					res.status = false;
+					res.message = ress.message;
+				}
+			} catch (Exception e) {
+				e.printStackTrace();
+				res.status = false;
+				res.message = "Có lỗi xảy ra";
+			}
+			return res;
+		});
+	}
 
 	/**
-	 * Xoa board
+	 * Xoa note
 	 * @return ResponseModel {
 	 * 		status: ...,
 	 * 		message: ...,
