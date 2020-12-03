@@ -4,17 +4,18 @@ import java.beans.BeanInfo;
 import java.beans.Introspector;
 import java.beans.PropertyDescriptor;
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.DataOutputStream;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
 import java.lang.reflect.Method;
 import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.ProtocolException;
 import java.net.URL;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -23,16 +24,13 @@ import java.util.Map;
 import java.util.Scanner;
 import java.util.concurrent.CompletableFuture;
 
-import javax.net.ssl.HttpsURLConnection;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import main.Main;
 import models.ResponseModel;
 
-public class NoteLibrary {
+public class MainLibrary {
 	/**
 	 * Gửi get request
 	 * 
@@ -57,7 +55,7 @@ public class NoteLibrary {
 				}
 				in.close(); // Đóng kết nối
 				res.data = new HashMap<String, Object>();
-				res.data.put("response", (String) resString.toString());
+				res.data.put("response", String.valueOf(resString.toString()));
 				res.status = true;
 			} catch (Exception e) {
 				e.printStackTrace();
@@ -95,7 +93,7 @@ public class NoteLibrary {
 				}
 				in.close(); // Đóng kết nối
 				res.data = new HashMap<String, Object>();
-				res.data.put("response", (String) resString.toString());
+				res.data.put("response", String.valueOf(resString.toString()));
 				res.status = true;
 			} catch (Exception e) {
 				e.printStackTrace();
@@ -126,7 +124,9 @@ public class NoteLibrary {
 				// Gửi request
 				con.setDoOutput(true);
 				DataOutputStream wr = new DataOutputStream(con.getOutputStream());
-				wr.writeBytes(urlParameters);
+				BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(wr, "UTF-8"));
+				writer.write(urlParameters);
+				writer.close();
 				wr.flush();
 				wr.close(); // Đóng request
 				BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream()));
@@ -137,7 +137,7 @@ public class NoteLibrary {
 				}
 				in.close();
 				res.data = new HashMap<String, Object>();
-				res.data.put("response", (String) resString.toString());
+				res.data.put("response", String.valueOf(resString.toString()));
 				res.status = true;
 			} catch (FileNotFoundException e1) {
 				res.message = "Tài khoản đã tồn tại";
@@ -175,7 +175,9 @@ public class NoteLibrary {
 				// Gửi request
 				con.setDoOutput(true);
 				DataOutputStream wr = new DataOutputStream(con.getOutputStream());
-				wr.writeBytes(urlParameters);
+				BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(wr, "UTF-8"));
+				writer.write(urlParameters);
+				writer.close();
 				wr.flush();
 				wr.close(); // Đóng request
 				BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream()));
@@ -186,7 +188,7 @@ public class NoteLibrary {
 				}
 				in.close();
 				res.data = new HashMap<String, Object>();
-				res.data.put("response", (String) resString.toString());
+				res.data.put("response", String.valueOf(resString.toString()));
 				res.status = true;
 			} catch (Exception e) {
 				e.printStackTrace();
@@ -320,45 +322,5 @@ public class NoteLibrary {
 			e.printStackTrace();
 		}
 		return res;
-	}
-
-	public static Map getMap(JSONObject object) {
-		Map<String, Object> map = new HashMap<String, Object>();
-		Object jsonObject = null;
-		String key = null;
-		Object value = null;
-		try {
-			Iterator<String> keys = object.keys();
-			while (keys.hasNext()) {
-				key = null;
-				value = null;
-				key = keys.next();
-				if (null != key && !object.isNull(key)) {
-					value = object.get(key);
-				}
-				if (value instanceof JSONObject) {
-					map.put(key, getMap((JSONObject) value));
-					continue;
-				}
-				if (value instanceof JSONArray) {
-					JSONArray array = ((JSONArray) value);
-					List list = new ArrayList();
-					for (int i = 0; i < array.length(); i++) {
-						jsonObject = array.get(i);
-						if (jsonObject instanceof JSONObject) {
-							list.add(getMap((JSONObject) jsonObject));
-						} else {
-							list.add(jsonObject);
-						}
-					}
-					map.put(key, list);
-					continue;
-				}
-				map.put(key, value);
-			}
-		} catch (Exception e) {
-			System.out.println(e);
-		}
-		return map;
 	}
 }

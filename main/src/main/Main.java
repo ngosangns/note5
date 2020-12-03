@@ -9,7 +9,7 @@ import controllers.MainController;
 import models.LoggingUserModel;
 import models.UserModel;
 import models.api.UserAPI;
-import models.library.NoteLibrary;
+import models.library.MainLibrary;
 import models.library.SwingLibrary;
 import views.MainFrame;
 
@@ -35,8 +35,7 @@ public class Main {
 	    
 	    
 	    // Đọc user token lấy token
-	    logging_user.token = "";
-	    logging_user.token = (new NoteLibrary()).readTokenFile();
+	    logging_user.token = (new MainLibrary()).readTokenFile();
 	    
 	    // Kiểm tra tồn tại token
 		// Nếu có thì lấy thông tin user

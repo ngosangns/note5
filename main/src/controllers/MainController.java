@@ -2,7 +2,7 @@ package controllers;
 import views.*;
 import main.Main;
 import models.api.UserAPI;
-import models.library.NoteLibrary;
+import models.library.MainLibrary;
 
 import javax.swing.JPanel;
 
@@ -21,8 +21,7 @@ public class MainController {
 				// Nếu đã đăng nhập thì direct về board
 				// Nếu chưa thì tiếp tục
 				if(UserAPI.checkLogin()) {
-					MainController.invoke("BoardView");
-					return;
+					directToBoard(); break;
 				}
 				cPanel = new LoginView();
 				Main.frame.getContentPane().add(cPanel);
@@ -32,8 +31,7 @@ public class MainController {
 				// Nếu đã đăng nhập thì direct về board
 				// Nếu chưa thì tiếp tục
 				if(UserAPI.checkLogin()) {
-					MainController.invoke("BoardView");
-					return;
+					directToBoard(); break;
 				}
 				cPanel = new RegisterView();
 				Main.frame.getContentPane().add(cPanel);
@@ -43,8 +41,7 @@ public class MainController {
 				// Nếu đã đăng nhập thì tiếp tục
 				// Nếu chưa thì direct về login
 				if(!UserAPI.checkLogin()) {
-					MainController.invoke("LoginView");
-					return;
+					directToLogin(); break;
 				}
 				cPanel = new ChangeInfoView();
 				Main.frame.getContentPane().add(cPanel);
@@ -54,8 +51,7 @@ public class MainController {
 				// Nếu đã đăng nhập thì tiếp tục
 				// Nếu chưa thì direct về login
 				if(!UserAPI.checkLogin()) {
-					MainController.invoke("LoginView");
-					return;
+					directToLogin(); break;
 				}
 				cPanel = new BoardView();
 				Main.frame.getContentPane().add(cPanel);
@@ -66,5 +62,15 @@ public class MainController {
 		// Reset
 		Main.frame.revalidate();
 		Main.frame.repaint();
+	}
+	
+	private static void directToLogin() {
+		cPanel = new LoginView();
+		Main.frame.getContentPane().add(cPanel);
+	}
+	
+	private static void directToBoard() {
+		cPanel = new BoardView();
+		Main.frame.getContentPane().add(cPanel);
 	}
 }

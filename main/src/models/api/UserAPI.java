@@ -1,16 +1,21 @@
 package models.api;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 
 import org.json.JSONException;
+import org.json.JSONObject;
 
 import controllers.MainController;
 import main.Main;
+import models.NoteModel;
 import models.ResponseModel;
 import models.UserModel;
-import models.library.NoteLibrary;
+import models.library.MainLibrary;
 import models.library.SwingLibrary;
 
 public class UserAPI {
@@ -29,13 +34,13 @@ public class UserAPI {
 			ResponseModel res = new ResponseModel();
 			try {
 				// Gửi request tạo user và nhận lại response
-				ResponseModel ress = NoteLibrary.sendPost("http://api.kaito.ninja/user",
+				ResponseModel ress = MainLibrary.sendPost("http://api.kaito.ninja/user",
 							"username="+user.username+"&password="+user.password).get();
 				
 				// Kiểm tra status, không có lỗi thì tiếp tục
 				if(ress.status) {
 					// Chuyển json trả về thành map
-					Map<String, Object> mapRess = NoteLibrary.stringToMap((String) ress.data.get("response"));
+					Map<String, Object> mapRess = MainLibrary.stringToMap((String) ress.data.get("response"));
 					// Nếu tồn tại token thì trả về
 					if(mapRess.containsKey("token")) {
 						res.status = true;
@@ -81,11 +86,11 @@ public class UserAPI {
 			ResponseModel res = new ResponseModel();
 			try {
 				// Gửi request tạo user và nhận lại response
-				ResponseModel ress = NoteLibrary.sendGet("http://api.kaito.ninja/user", token).get();
+				ResponseModel ress = MainLibrary.sendGet("http://api.kaito.ninja/user", token).get();
 				// Kiểm tra status, không có lỗi thì tiếp tục
 				if(ress.status) {
 					// Chuyển json trả về thành map
-					Map<String, Object> mapRess = NoteLibrary.stringToMap((String) ress.data.get("response"));
+					Map<String, Object> mapRess = MainLibrary.stringToMap((String) ress.data.get("response"));
 					// Nếu tồn tại username thì trả về
 					if(mapRess.containsKey("username")) {
 						res.status = true;
@@ -130,11 +135,11 @@ public class UserAPI {
 			ResponseModel res = new ResponseModel();
 			try {
 				// Gửi request tạo user và nhận lại response
-				ResponseModel ress = NoteLibrary.sendPost("http://api.kaito.ninja/login", "username="+user.username+"&password="+user.password).get();
+				ResponseModel ress = MainLibrary.sendPost("http://api.kaito.ninja/login", "username="+user.username+"&password="+user.password).get();
 				// Kiểm tra status, không có lỗi thì tiếp tục
 				if(ress.status) {
 					// Chuyển json trả về thành map
-					Map<String, Object> mapRess = NoteLibrary.stringToMap((String) ress.data.get("response"));
+					Map<String, Object> mapRess = MainLibrary.stringToMap((String) ress.data.get("response"));
 					// Nếu tồn tại token thì trả về
 					if(mapRess.containsKey("token")) {
 						res.status = true;
@@ -164,9 +169,53 @@ public class UserAPI {
 		});
 	}
 	
+	/**
+	 * Cập nhật user
+	 * @param user
+	 * @return ResponseModel res = {
+	 * 		status: true,
+	 * 		data: {
+	 * 			token: string
+	 * 		}
+	 * }
+	 */
+	public static CompletableFuture<ResponseModel> update(UserModel user) {
+		return CompletableFuture.supplyAsync(() -> {
+			ResponseModel res = new ResponseModel();
+			try {
+				// Gửi request tạo user và nhận lại response
+				ResponseModel ress = MainLibrary.sendPost("http://api.kaito.ninja/user/put",
+							"password="+user.password, Main.logging_user.token).get();
+				
+				// Kiểm tra status, không có lỗi thì tiếp tục
+				if(ress.status) {
+					JSONObject resJSON = new JSONObject(String.valueOf(ress.data.get("response")));
+					// Nếu không tồn tại thông báo lỗi
+					if(!resJSON.has("message")) {
+						res.status = true;
+					}
+					// Nếu tồn tại trường thông báo lỗi thì trả về lỗi
+					else {
+						res.status = false;
+						res.message = String.valueOf(resJSON.get("message"));
+					}
+				}
+				else {
+					res.status = false;
+					res.message = ress.message;
+				}
+			} catch (Exception e) {
+				e.printStackTrace();
+				res.status = false;
+				res.message = "Có lỗi xảy ra";
+			}
+			return res;
+		});
+	}
+	
 	public static void logout() {
 		Main.logging_user.token = "";
-		if(!NoteLibrary.writeTokenFile("")) {
+		if(!MainLibrary.writeTokenFile("")) {
 			SwingLibrary.alert("Có lỗi xảy ra");
 		}
 	}
