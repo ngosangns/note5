@@ -73,9 +73,9 @@ public class BoardContextMenu extends JPopupMenu {
 		// Xoa board
 		delete.addActionListener(new ActionListener() {
 		    public void actionPerformed(ActionEvent e) {
-		    	JLabel label = new JLabel("Bạn muốn xóa: "+boards.get(index).name+"?");
+		    	JLabel label = new JLabel("Bạn muốn xóa: "+boards.get(index).name+"?", JLabel.CENTER);
 		    	label.setPreferredSize(new Dimension(300, 25));
-		    	int option = JOptionPane.showConfirmDialog(null, label, "Xóa bảng", JOptionPane.YES_NO_OPTION);
+		    	int option = JOptionPane.showConfirmDialog(null, label, "Xóa bảng", JOptionPane.YES_NO_OPTION, JOptionPane.PLAIN_MESSAGE, null);
 		    	// Neu chon xoa
 		    	if(option == JOptionPane.YES_OPTION) {
 		    		// Cap nhat len server

@@ -65,9 +65,9 @@ public class NoteContextMenu extends JPopupMenu {
 		// Xoa note
 		delete.addActionListener(new ActionListener() {
 		    public void actionPerformed(ActionEvent e) {
-		    	JLabel label = new JLabel("Bạn muốn xóa: "+notes.get(index).name+"?");
+		    	JLabel label = new JLabel("Bạn muốn xóa: "+notes.get(index).name+"?", JLabel.CENTER);
 		    	label.setPreferredSize(new Dimension(300, 25));
-		    	int option = JOptionPane.showConfirmDialog(null, label, "Xóa bảng", JOptionPane.YES_NO_OPTION);
+		    	int option = JOptionPane.showConfirmDialog(null, label, "Xóa ghi chú", JOptionPane.YES_NO_OPTION, JOptionPane.PLAIN_MESSAGE, null);
 		    	// Neu chon xoa
 		    	if(option == JOptionPane.YES_OPTION) {
 		    		// Cap nhat len server
