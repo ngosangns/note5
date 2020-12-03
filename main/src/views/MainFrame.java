@@ -11,7 +11,7 @@ public class MainFrame extends JFrame {
 	public MainFrame() {
 		getContentPane().setBackground(Color.WHITE);
 		getContentPane().setLayout(new GridLayout(1, 0, 0, 0));
-		setSize(1000, 500);
+		setSize(500, 300);
 		setMinimumSize(new Dimension(500, 300));
 		setBackground(Color.white);
 		setJMenuBar(new MenuBar()); // Add MenuBar

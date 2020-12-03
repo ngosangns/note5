@@ -14,6 +14,7 @@ import java.util.Map;
 
 import javax.swing.DefaultListModel;
 import javax.swing.ImageIcon;
+import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
@@ -72,7 +73,9 @@ public class BoardContextMenu extends JPopupMenu {
 		// Xoa board
 		delete.addActionListener(new ActionListener() {
 		    public void actionPerformed(ActionEvent e) {
-		    	int option = JOptionPane.showConfirmDialog(null, "Bạn muốn xóa: "+boards.get(index).name+"?", "Xóa bảng", JOptionPane.YES_NO_OPTION);
+		    	JLabel label = new JLabel("Bạn muốn xóa: "+boards.get(index).name+"?");
+		    	label.setPreferredSize(new Dimension(300, 25));
+		    	int option = JOptionPane.showConfirmDialog(null, label, "Xóa bảng", JOptionPane.YES_NO_OPTION);
 		    	// Neu chon xoa
 		    	if(option == JOptionPane.YES_OPTION) {
 		    		// Cap nhat len server
