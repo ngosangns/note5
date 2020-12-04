@@ -1,4 +1,8 @@
-package views;
+package views.context.menu;
+import models.BoardModel;
+import models.NoteModel;
+import models.api.BoardAPI;
+import models.library.SwingLibrary;
 
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
@@ -13,20 +17,13 @@ import javax.swing.JOptionPane;
 import javax.swing.JPopupMenu;
 import javax.swing.JTextField;
 
-import models.BoardModel;
-import models.NoteModel;
-import models.api.BoardAPI;
-import models.api.NoteAPI;
-import models.library.SwingLibrary;
-
-public class NoteContextMenu extends JPopupMenu {
+public class BoardContextMenu extends JPopupMenu {
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	public JMenuItem rename = new JMenuItem("Sửa");
-	public JMenuItem delete = new JMenuItem("Xóa");
-	
+	private JMenuItem rename = new JMenuItem("Đổi tên bảng");
+	private JMenuItem delete = new JMenuItem("Xóa");
 	private JMenuItem bounder = new JMenuItem();
 	private JMenuItem setRed = new JMenuItem("Đặt màu đỏ", new ImageIcon("color/red.png"));
 	private JMenuItem setOrange = new JMenuItem("Đặt màu cam", new ImageIcon("color/orange.png"));
@@ -35,25 +32,32 @@ public class NoteContextMenu extends JPopupMenu {
 	private JMenuItem setBlue = new JMenuItem("Đặt màu xanh dương", new ImageIcon("color/blue.png"));
 	private JMenuItem setTransparent = new JMenuItem("Đặt lại màu");
 	
-	public NoteContextMenu(List<NoteModel> notes, int index, DefaultListModel<NoteModel> noteListModel) {
-		// Sua ten note
+	public BoardContextMenu(
+			List<BoardModel> boards,
+			int index,
+			BoardModel cboard,
+			DefaultListModel<NoteModel> noteListModel,
+			DefaultListModel<BoardModel> boardListModel
+		) {
+		// Sua ten board
 		rename.addActionListener(new ActionListener() {
 		    public void actionPerformed(ActionEvent e) {
-		    	JTextField textField = new JTextField(notes.get(index).name);
+		    	JTextField textField = new JTextField(boards.get(index).name);
 		    	textField.setPreferredSize(new Dimension(250, 25));
-		    	int option = JOptionPane.showConfirmDialog(null, textField, "Cập nhật ghi chú", JOptionPane.YES_NO_OPTION, JOptionPane.PLAIN_MESSAGE);
+		    	int option = JOptionPane.showConfirmDialog(null, textField, "Đổi tên bảng", JOptionPane.YES_NO_OPTION, JOptionPane.PLAIN_MESSAGE);
 		    	String text = textField.getText();
 		    	
 		    	// Neu khong chon YES
 		    	if(option != JOptionPane.YES_OPTION) return;
 		    	
 		    	// Kiem tra dau vao
-		    	if(!(text.length() >= 0 && !text.equals(notes.get(index).name))) return;
+		    	if(!(text.length() >= 0 && !text.equals(boards.get(index).name))) return;
 		    	
-		    	notes.get(index).name = text;
-		    	noteListModel.get(index).name = text;
+		    	boards.get(index).name = text;
+	    		boardListModel.get(index).name = text;
+	    		
 	    		// Cap nhat len server
-	    		NoteAPI.update(notes.get(index)).thenAccept(res -> {
+	    		BoardAPI.update(boards.get(index)).thenAccept(res -> {
 	    			// Hien popup neu xay ra loi
 	    			if(!res.status) {
 	    				SwingLibrary.alert(res.message);
@@ -62,60 +66,64 @@ public class NoteContextMenu extends JPopupMenu {
 		    }
 		});
 		
-		// Xoa note
+		// Xoa board
 		delete.addActionListener(new ActionListener() {
 		    public void actionPerformed(ActionEvent e) {
-		    	JLabel label = new JLabel("Bạn muốn xóa: "+notes.get(index).name+"?", JLabel.CENTER);
+		    	JLabel label = new JLabel("Bạn muốn xóa: "+boards.get(index).name+"?", JLabel.CENTER);
 		    	label.setPreferredSize(new Dimension(300, 25));
-		    	int option = JOptionPane.showConfirmDialog(null, label, "Xóa ghi chú", JOptionPane.YES_NO_OPTION, JOptionPane.PLAIN_MESSAGE, null);
+		    	int option = JOptionPane.showConfirmDialog(null, label, "Xóa bảng", JOptionPane.YES_NO_OPTION, JOptionPane.PLAIN_MESSAGE, null);
 		    	// Neu chon xoa
 		    	if(option == JOptionPane.YES_OPTION) {
 		    		// Cap nhat len server
-		    		NoteAPI.delete(notes.get(index)).thenAccept(res -> {
+		    		BoardAPI.delete(boards.get(index)).thenAccept(res -> {
 		    			// Hien popup neu xay ra loi
 		    			if(!res.status) {
 		    				SwingLibrary.alert(res.message);
 		    			}
 		    		});
-		    		notes.remove(index);
-		    		noteListModel.remove(index);
+		    		// Neu xoa bang hien tai thi clear note dang hien thi
+		    		if(cboard == boards.get(index))
+		    			noteListModel.clear();
+		    		// Xoa bang trong list
+		    		boards.remove(index);
+		    		boardListModel.remove(index);
 		    	}
 		    }
 		});
 		
 		setRed.addActionListener(new ActionListener() {
 		    public void actionPerformed(ActionEvent e) {
-		    	updateColor(notes, index, noteListModel, "red");
+		    	updateColor(boards, index, boardListModel, "red");
 		    }
 		});
 		
 		setOrange.addActionListener(new ActionListener() {
 		    public void actionPerformed(ActionEvent e) {
-		    	updateColor(notes, index, noteListModel, "orange");
+		    	updateColor(boards, index, boardListModel, "orange");
 		    }
 		});
 		
 		setYellow.addActionListener(new ActionListener() {
 		    public void actionPerformed(ActionEvent e) {
-		    	updateColor(notes, index, noteListModel, "yellow");
+		    	updateColor(boards, index, boardListModel, "yellow");
 		    }
 		});
 		
 		setGreen.addActionListener(new ActionListener() {
 		    public void actionPerformed(ActionEvent e) {
-		    	updateColor(notes, index, noteListModel, "green");
+		    	updateColor(boards, index, boardListModel, "green");
 		    }
 		});
 		
 		setBlue.addActionListener(new ActionListener() {
 		    public void actionPerformed(ActionEvent e) {
-		    	updateColor(notes, index, noteListModel, "blue");
+		    	updateColor(boards, index, boardListModel, "blue");
 		    }
 		});
 		
 		setTransparent.addActionListener(new ActionListener() {
 		    public void actionPerformed(ActionEvent e) {
-		    	updateColor(notes, index, noteListModel, null);
+		    	updateColor(boards, index, boardListModel, null);
 		    }
 		});
 		
@@ -133,16 +141,16 @@ public class NoteContextMenu extends JPopupMenu {
 	
 	// Thay doi mau cho board
 	private void updateColor(
-			List<NoteModel> notes,
+			List<BoardModel> boards,
 			int index,
-			DefaultListModel<NoteModel> boardListModel,
+			DefaultListModel<BoardModel> boardListModel,
 			String color
 		) {
-		notes.get(index).color = color;
+		boards.get(index).color = color;
 		boardListModel.get(index).color = color;
 		
 		// Cap nhat len server
-		NoteAPI.updateColor(notes.get(index)).thenAccept(res -> {
+		BoardAPI.updateColor(boards.get(index)).thenAccept(res -> {
 			// Hien popup neu xay ra loi
 			if(!res.status) {
 				SwingLibrary.alert(res.message);

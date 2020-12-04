@@ -15,7 +15,6 @@ import java.io.OutputStreamWriter;
 import java.lang.reflect.Method;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -47,6 +46,7 @@ public class MainLibrary {
 				con.setRequestMethod("GET");
 				// Thêm request header
 				con.setRequestProperty("User-Agent", "Mozilla/5.0");
+				con.setRequestProperty("Accept-Language", "en-US,en;q=0.5");
 				BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream()));
 				String inputLine;
 				StringBuffer resString = new StringBuffer();
@@ -228,6 +228,7 @@ public class MainLibrary {
 	public static Map<String, Object> toMap(JSONObject object) throws JSONException {
 		Map<String, Object> map = new HashMap<String, Object>();
 
+		@SuppressWarnings("unchecked")
 		Iterator<String> keysItr = object.keys();
 		while (keysItr.hasNext()) {
 			String key = keysItr.next();

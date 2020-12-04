@@ -3,12 +3,8 @@ package models;
 import java.util.List;
 import java.util.ArrayList;
 
-public class BoardModel {
-	public String id;
-	public String name;
-	public String date_created;
+public class BoardModel extends ObjectModel {
 	public String user_id;
-	public String color;
 	public List<NoteModel> notes = new ArrayList<NoteModel>();
 	
 	public BoardModel(String id, String name, String date_created, String user_id, String color) {

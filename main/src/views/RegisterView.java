@@ -15,10 +15,13 @@ import models.library.MainLibrary;
 import models.library.SwingLibrary;
 import net.miginfocom.swing.MigLayout;
 import java.awt.event.ActionListener;
-import java.util.concurrent.CompletableFuture;
 import java.awt.event.ActionEvent;
 
 public class RegisterView extends JPanel {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private JTextField username;
 	private JPasswordField password;
 	private JPasswordField rePassword;

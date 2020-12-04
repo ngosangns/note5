@@ -2,7 +2,6 @@ package controllers;
 import views.*;
 import main.Main;
 import models.api.UserAPI;
-import models.library.MainLibrary;
 
 import javax.swing.JPanel;
 

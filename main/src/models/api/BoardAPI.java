@@ -3,7 +3,6 @@ package models.api;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
-import java.util.Map;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
@@ -39,6 +38,7 @@ public class BoardAPI {
 						res.status = true;
 						res.data = new HashMap<String, Object>();
 						List<BoardModel> boards = new ArrayList<BoardModel>();
+						@SuppressWarnings("unchecked")
 						Iterator<String> resJSONkeys = resJSON.keys();
 						try {
 							while(resJSONkeys.hasNext()) {

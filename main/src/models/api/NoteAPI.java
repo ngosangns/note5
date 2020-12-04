@@ -9,7 +9,6 @@ import java.util.concurrent.CompletableFuture;
 import org.json.JSONObject;
 
 import main.Main;
-import models.BoardModel;
 import models.ResponseModel;
 import models.NoteModel;
 import models.library.MainLibrary;
@@ -39,6 +38,7 @@ public class NoteAPI {
 						res.status = true;
 						res.data = new HashMap<String, Object>();
 						List<NoteModel> notes = new ArrayList<NoteModel>();
+						@SuppressWarnings("unchecked")
 						Iterator<String> resJSONkeys = resJSON.keys();
 						try {
 							while(resJSONkeys.hasNext()) {

@@ -11,18 +11,19 @@ import models.library.MainLibrary;
 import models.library.SwingLibrary;
 import net.miginfocom.swing.MigLayout;
 import javax.swing.JLabel;
-import javax.swing.SwingConstants;
 
 import controllers.MainController;
 
-import java.awt.Label;
 import javax.swing.JButton;
-import java.awt.GridBagLayout;
 import javax.swing.JTextField;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 
 public class LoginView extends JPanel {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private JTextField username;
 	private JPasswordField password;
 	public LoginView() {

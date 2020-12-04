@@ -1,25 +1,27 @@
 package main;
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.util.Scanner;
 
 import controllers.MainController;
 import models.LoggingUserModel;
-import models.UserModel;
 import models.api.UserAPI;
 import models.library.MainLibrary;
 import models.library.SwingLibrary;
-import views.MainFrame;
+import views.component.MainFrame;
 
 public class Main {
 	public static MainFrame frame;
 	public static LoggingUserModel logging_user;
+	public static boolean enableSortBoardByColor;
+	public static boolean enableSortNoteByColor;
 	
 	public static void main(String[] args) {
 		// Dựng frame
 		frame = new MainFrame();
+		
+		// Cài đặt nút sắp xếp theo màu (Settings)
+		enableSortBoardByColor = false;
+		enableSortNoteByColor = false;
 		
 		// Tạo mới logging user
 		logging_user = new LoggingUserModel();
@@ -35,7 +37,7 @@ public class Main {
 	    
 	    
 	    // Đọc user token lấy token
-	    logging_user.token = (new MainLibrary()).readTokenFile();
+	    logging_user.token = MainLibrary.readTokenFile();
 	    
 	    // Kiểm tra tồn tại token
 		// Nếu có thì lấy thông tin user
@@ -48,6 +50,7 @@ public class Main {
 				}
 				// Nếu không thì direct đến trang đăng nhập
 				else {
+					SwingLibrary.alert("Lỗi kết nối, vui lòng đăng nhập lại");
 					controllers.MainController.invoke("LoginView");
 				}
 			});

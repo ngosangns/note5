@@ -1,13 +1,7 @@
 package models;
 
-import java.sql.Date;
-
-public class NoteModel {
-	public String id;
-	public String name;
-	public String date_created;
+public class NoteModel extends ObjectModel {
 	public String board_id;
-	public String color;
 	
 	public NoteModel(String id, String name, String date_created, String board_id, String color) {
 		this.id = id;

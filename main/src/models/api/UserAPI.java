@@ -1,18 +1,11 @@
 package models.api;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
 import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 
-import org.json.JSONException;
 import org.json.JSONObject;
 
-import controllers.MainController;
 import main.Main;
-import models.NoteModel;
 import models.ResponseModel;
 import models.UserModel;
 import models.library.MainLibrary;
@@ -213,6 +206,9 @@ public class UserAPI {
 		});
 	}
 	
+	/**
+	 * Đăng xuất (xóa token)
+	 */
 	public static void logout() {
 		Main.logging_user.token = "";
 		if(!MainLibrary.writeTokenFile("")) {
@@ -220,6 +216,10 @@ public class UserAPI {
 		}
 	}
 	
+	/**
+	 * Kiểm tra xem đã đăng nhập chưa
+	 * @return boolean
+	 */
 	public static boolean checkLogin() {
 		if(Main.logging_user.token != null && Main.logging_user.token.length() > 0) {
 			if(Main.logging_user.username != null) {

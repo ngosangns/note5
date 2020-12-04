@@ -7,7 +7,6 @@ import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
-import javax.swing.JTextField;
 
 import main.Main;
 import models.UserModel;
@@ -16,6 +15,10 @@ import models.library.SwingLibrary;
 import net.miginfocom.swing.MigLayout;
 
 public class ChangeInfoView extends JPanel {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private JPasswordField password;
 	private JPasswordField rePassword;
 	public ChangeInfoView() {

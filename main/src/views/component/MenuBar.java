@@ -1,4 +1,4 @@
-package views;
+package views.component;
 import controllers.MainController;
 import models.api.UserAPI;
 
@@ -13,6 +13,10 @@ import javax.swing.event.MenuEvent;
 import javax.swing.event.MenuListener;
 
 public class MenuBar extends JMenuBar {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	JMenu account = new JMenu("Tài khoản");
 		JMenuItem login = new JMenuItem("Đăng nhập");
 		JMenuItem register = new JMenuItem("Đăng ký");
