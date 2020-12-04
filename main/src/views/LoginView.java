@@ -92,7 +92,5 @@ public class LoginView extends JPanel {
 		});
 		panel.add(submit, "cell 0 1,alignx center");
 		Main.frame.setTitle("Đăng nhập");
-		
-		
 	}
 }

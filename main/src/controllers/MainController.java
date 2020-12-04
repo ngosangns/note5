@@ -16,6 +16,11 @@ public class MainController {
 		
 		// Set new panel
 		switch(pageName) {
+			case "LoadingView": {
+				cPanel = new LoadingView();
+				Main.frame.getContentPane().add(cPanel);
+				break;
+			}
 			case "LoginView": {
 				// Nếu đã đăng nhập thì direct về board
 				// Nếu chưa thì tiếp tục

@@ -2,12 +2,15 @@ package main;
 import java.io.File;
 import java.io.IOException;
 
+import javax.swing.UIManager;
+
 import controllers.MainController;
 import models.LoggingUserModel;
 import models.api.UserAPI;
 import models.library.MainLibrary;
 import models.library.SwingLibrary;
 import views.component.MainFrame;
+import com.formdev.flatlaf.intellijthemes.FlatGrayIJTheme;
 
 public class Main {
 	public static MainFrame frame;
@@ -16,6 +19,11 @@ public class Main {
 	public static boolean enableSortNoteByColor;
 	
 	public static void main(String[] args) {
+		try {
+		    UIManager.setLookAndFeel( new FlatGrayIJTheme() );
+		} catch( Exception ex ) {
+		    System.err.println( "Failed to initialize LaF" );
+		}
 		// Dựng frame
 		frame = new MainFrame();
 		
@@ -23,6 +31,15 @@ public class Main {
 		enableSortBoardByColor = false;
 		enableSortNoteByColor = false;
 		
+		// Chuyển đến trang loading
+		controllers.MainController.invoke("LoadingView");
+		// Đứng hình cho vui
+		try {
+			Thread.sleep(2000);
+		} catch (InterruptedException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
 		// Tạo mới logging user
 		logging_user = new LoggingUserModel();
 		
@@ -39,6 +56,9 @@ public class Main {
 	    // Đọc user token lấy token
 	    logging_user.token = MainLibrary.readTokenFile();
 	    
+	    // Thêm thanh menu bar
+	 	frame.enableMenuBar();
+	 	
 	    // Kiểm tra tồn tại token
 		// Nếu có thì lấy thông tin user
 		if(Main.logging_user.token.length() > 0) {

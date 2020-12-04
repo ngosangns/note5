@@ -1,14 +1,19 @@
 package views.component;
 import controllers.MainController;
 import models.api.UserAPI;
+import views.context.menu.BoardContextMenu;
 
 import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
+import javax.swing.JPopupMenu;
+import javax.swing.SwingUtilities;
 import javax.swing.event.MenuEvent;
 import javax.swing.event.MenuListener;
 
@@ -17,13 +22,12 @@ public class MenuBar extends JMenuBar {
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	JMenu account = new JMenu("Tài khoản");
-		JMenuItem login = new JMenuItem("Đăng nhập");
-		JMenuItem register = new JMenuItem("Đăng ký");
-		JMenuItem changeInfo = new JMenuItem("Cập nhật thông tin");
-		JMenuItem logout = new JMenuItem("Đăng xuất");
-	JMenu board = new JMenu("Bảng");
-		JMenuItem boardItem = new JMenuItem("Bảng");
+	private JMenu account = new JMenu("Tài khoản");
+	private JMenuItem login = new JMenuItem("Đăng nhập");
+	private JMenuItem register = new JMenuItem("Đăng ký");
+	private JMenuItem changeInfo = new JMenuItem("Cập nhật thông tin");
+	private JMenuItem logout = new JMenuItem("Đăng xuất");
+	private JMenu board = new JMenu("Bảng");
 	
 	public MenuBar() {
 		super();
@@ -32,21 +36,18 @@ public class MenuBar extends JMenuBar {
 				MainController.invoke("LoginView");
 			}
 		});
-		login.setBackground(Color.white);
 		
 		register.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				MainController.invoke("RegisterView");
 			}
 		});
-		register.setBackground(Color.white);
 		
 		changeInfo.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				MainController.invoke("ChangeInfoView");
 			}
 		});
-		changeInfo.setBackground(Color.white);
 		
 		// Set hành động cho nút đăng xuất
 		logout.addActionListener(new ActionListener() {
@@ -57,15 +58,17 @@ public class MenuBar extends JMenuBar {
 				}
 			}
 		});
-		logout.setBackground(Color.white);
 		
 		// Set hành động cho nút board
-		boardItem.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				MainController.invoke("BoardView");
+		board.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mousePressed(MouseEvent e) {
+				// Set hanh dong khi click chuot trai
+				if (SwingUtilities.isLeftMouseButton(e) ) {
+					MainController.invoke("BoardView");
+	            }
 			}
 		});
-		boardItem.setBackground(Color.white);
 		
 		// Set hành động cho nút Account
 		account.addMenuListener(new MenuListener() {
@@ -88,12 +91,9 @@ public class MenuBar extends JMenuBar {
 		account.add(register);
 		account.add(changeInfo);
 		account.add(logout);
-		board.add(boardItem);
 		
 		// Add item cha vào menu bar
 		add(account);
 		add(board);
-		
-		setBackground(Color.white);
 	}
 }

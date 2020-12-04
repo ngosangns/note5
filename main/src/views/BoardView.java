@@ -1,14 +1,16 @@
 package views;
 
-import java.awt.Button;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.font.TextAttribute;
 
 import javax.swing.DefaultListCellRenderer;
 import javax.swing.DefaultListModel;
+import javax.swing.JButton;
 import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
@@ -37,10 +39,7 @@ import views.context.menu.NoteContextMenu;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import javax.swing.JCheckBox;
-import java.awt.Checkbox;
-import java.beans.PropertyChangeListener;
 import java.text.SimpleDateFormat;
-import java.beans.PropertyChangeEvent;
 import java.awt.event.ItemListener;
 import java.awt.event.ItemEvent;
 
@@ -123,7 +122,7 @@ public class BoardView extends JPanel {
 		addBoardPanel.add(addBoardTextField, "cell 0 0,growx");
 		addBoardTextField.setColumns(10);
 		
-		Button addBoardButton = new Button("+");
+		JButton addBoardButton = new JButton("+");
 		
 		addBoardButton.setMinimumSize(new Dimension(50, 0));
 		addBoardPanel.add(addBoardButton, "cell 1 0");
@@ -136,7 +135,7 @@ public class BoardView extends JPanel {
 		addNotePanel.add(addNoteTextField, "cell 0 0,growx");
 		addNoteTextField.setColumns(10);
 		
-		Button addNoteButton = new Button("+");
+		JButton addNoteButton = new JButton("+");
 		addNoteButton.setMinimumSize(new Dimension(50, 0));
 		addNotePanel.add(addNoteButton, "cell 1 0");
 		
@@ -164,28 +163,6 @@ public class BoardView extends JPanel {
 			}
 		});
 		
-		// Set màu cho board
-		boardList.setCellRenderer(new DefaultListCellRenderer() {
-			@Override
-			public Component getListCellRendererComponent(@SuppressWarnings("rawtypes") JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
-				Component c = super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
-				if(colorMap.containsKey(boards.get(index).color))
-					c.setBackground(colorMap.get(boards.get(index).color));
-				return c;
-			}
-		});
-				
-		// Set màu cho note
-		noteList.setCellRenderer(new DefaultListCellRenderer() {
-			@Override
-			public Component getListCellRendererComponent(@SuppressWarnings("rawtypes") JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
-				Component c = super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
-				if(colorMap.containsKey(cboard.notes.get(index).color))
-					c.setBackground(colorMap.get(cboard.notes.get(index).color));
-				return c;
-			}
-		});
-		
 		JScrollPane boardScrollPane = new JScrollPane(boardList);
 		add(boardScrollPane, "cell 0 1,grow");
 		
@@ -193,11 +170,12 @@ public class BoardView extends JPanel {
 		
 		add(noteScrollPane, "cell 1 1,grow");
 		
-		Checkbox sortBoardByColor = new Checkbox("Sắp xếp theo màu", null, Main.enableSortBoardByColor);
-		add(sortBoardByColor, "cell 0 2");
+		JCheckBox sortBoardByColor = new JCheckBox("Sắp xếp theo màu", null, Main.enableSortBoardByColor);
+		add(sortBoardByColor, "flowx,cell 0 2");
 		
-		Checkbox sortNoteByColor = new Checkbox("Sắp xếp theo màu", null, Main.enableSortNoteByColor);
+		JCheckBox sortNoteByColor = new JCheckBox("Sắp xếp theo màu", null, Main.enableSortNoteByColor);
 		add(sortNoteByColor, "cell 1 2");
+		
 		Main.frame.setTitle("Bảng");
 
 		// Sort bảng theo màu sắc khi check vào box
@@ -226,10 +204,59 @@ public class BoardView extends JPanel {
 				boardListModel.clear();
 				boardListModel.addAll(boards);
 				// Update setting
-				Main.enableSortBoardByColor = sortBoardByColor.getState();
+				Main.enableSortBoardByColor = sortBoardByColor.isSelected();
 			}
 		});
 		
+		// Set màu cho board
+		boardList.setCellRenderer(new DefaultListCellRenderer() {
+			@Override
+			public Component getListCellRendererComponent(@SuppressWarnings("rawtypes") JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
+				Component c = super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
+				if(colorMap.containsKey(boards.get(index).color)) {
+					c.setBackground(colorMap.get(boards.get(index).color));
+					c.setForeground(Color.DARK_GRAY);
+				}
+				if(cellHasFocus) {
+					// Set chữ đậm
+					Map<TextAttribute, Object> attributes = new HashMap<>();
+					attributes.put(TextAttribute.WEIGHT, TextAttribute.WEIGHT_BOLD);
+					c.setFont(Font.getFont(attributes));
+					
+					// Set board hien tai
+					cboard = boards.get(index);
+					
+					// Nếu nút sort by color được chọn thì sort theo màu
+					if(sortNoteByColor.isSelected()) sortByColor(cboard.notes);
+					// Nếu không thì sort theo ngày tạo
+					else sortByDate(cboard.notes);
+					// Them toan bo note cua board vao note list model
+					noteListModel.clear();
+					noteListModel.addAll(cboard.notes);
+				}
+				return c;
+			}
+		});
+				
+		// Set màu cho note
+		noteList.setCellRenderer(new DefaultListCellRenderer() {
+			@Override
+			public Component getListCellRendererComponent(@SuppressWarnings("rawtypes") JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
+				Component c = super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
+				if(colorMap.containsKey(cboard.notes.get(index).color)) {
+					c.setBackground(colorMap.get(cboard.notes.get(index).color));
+					c.setForeground(Color.DARK_GRAY);
+				}
+				if(cellHasFocus) {
+					// Set chữ đậm
+					Map<TextAttribute, Object> attributes = new HashMap<>();
+					attributes.put(TextAttribute.WEIGHT, TextAttribute.WEIGHT_BOLD);
+					c.setFont(Font.getFont(attributes));
+				}
+				return c;
+			}
+		});
+				
 		// Sort note theo màu sắc khi check vào box
 		sortNoteByColor.addItemListener(new ItemListener() {
 			public void itemStateChanged(ItemEvent e) {
@@ -258,7 +285,7 @@ public class BoardView extends JPanel {
 				noteListModel.clear();
 				noteListModel.addAll(cboard.notes);
 				// Update setting
-				Main.enableSortNoteByColor = sortNoteByColor.getState();
+				Main.enableSortNoteByColor = sortNoteByColor.isSelected();
 			}
 		});
 
@@ -382,22 +409,6 @@ public class BoardView extends JPanel {
 					// Hien popup
 					JPopupMenu popupMenu = new BoardContextMenu(boards, temp_getBoardIndex, cboard, noteListModel, boardListModel);
 					popupMenu.show(e.getComponent(), e.getX(), e.getY());
-	            }
-				// Set hanh dong khi click chuot trai
-				if (SwingUtilities.isLeftMouseButton(e) ) {
-					// Lay ra index cua board hien tai
-					int temp_getBoardIndex = boardList.locationToIndex(e.getPoint());
-					boardList.setSelectedIndex(temp_getBoardIndex);
-					// Set board hien tai
-					cboard = boards.get(temp_getBoardIndex);
-					
-					// Nếu nút sort by color được chọn thì sort theo màu
-					if(sortNoteByColor.getState()) sortByColor(cboard.notes);
-					// Nếu không thì sort theo ngày tạo
-					else sortByDate(cboard.notes);
-					// Them toan bo note cua board vao note list model
-					noteListModel.clear();
-					noteListModel.addAll(cboard.notes);
 	            }
 			}
 		});
