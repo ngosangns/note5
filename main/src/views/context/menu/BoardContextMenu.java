@@ -42,27 +42,7 @@ public class BoardContextMenu extends JPopupMenu {
 		// Sua ten board
 		rename.addActionListener(new ActionListener() {
 		    public void actionPerformed(ActionEvent e) {
-		    	JTextField textField = new JTextField(boards.get(index).name);
-		    	textField.setPreferredSize(new Dimension(250, 25));
-		    	int option = JOptionPane.showConfirmDialog(null, textField, "Đổi tên bảng", JOptionPane.YES_NO_OPTION, JOptionPane.PLAIN_MESSAGE);
-		    	String text = textField.getText();
-		    	
-		    	// Neu khong chon YES
-		    	if(option != JOptionPane.YES_OPTION) return;
-		    	
-		    	// Kiem tra dau vao
-		    	if(!(text.length() >= 0 && !text.equals(boards.get(index).name))) return;
-		    	
-		    	boards.get(index).name = text;
-	    		boardListModel.get(index).name = text;
-	    		
-	    		// Cap nhat len server
-	    		BoardAPI.update(boards.get(index)).thenAccept(res -> {
-	    			// Hien popup neu xay ra loi
-	    			if(!res.status) {
-	    				SwingLibrary.alert(res.message);
-	    			}
-	    		});
+		    	renameBoard(boards, index, boardListModel);
 		    }
 		});
 		
@@ -151,6 +131,30 @@ public class BoardContextMenu extends JPopupMenu {
 		
 		// Cap nhat len server
 		BoardAPI.updateColor(boards.get(index)).thenAccept(res -> {
+			// Hien popup neu xay ra loi
+			if(!res.status) {
+				SwingLibrary.alert(res.message);
+			}
+		});
+	}
+	
+	public static void renameBoard(List<BoardModel> boards, int index, DefaultListModel<BoardModel> boardListModel) {
+		JTextField textField = new JTextField(boards.get(index).name);
+    	textField.setPreferredSize(new Dimension(250, 25));
+    	int option = JOptionPane.showConfirmDialog(null, textField, "Đổi tên bảng", JOptionPane.YES_NO_OPTION, JOptionPane.PLAIN_MESSAGE);
+    	String text = textField.getText();
+    	
+    	// Neu khong chon YES
+    	if(option != JOptionPane.YES_OPTION) return;
+    	
+    	// Kiem tra dau vao
+    	if(!(text.length() >= 0 && !text.equals(boards.get(index).name))) return;
+    	
+    	boards.get(index).name = text;
+		boardListModel.get(index).name = text;
+		
+		// Cap nhat len server
+		BoardAPI.update(boards.get(index)).thenAccept(res -> {
 			// Hien popup neu xay ra loi
 			if(!res.status) {
 				SwingLibrary.alert(res.message);

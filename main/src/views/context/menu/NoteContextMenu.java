@@ -37,26 +37,7 @@ public class NoteContextMenu extends JPopupMenu {
 		// Sua ten note
 		rename.addActionListener(new ActionListener() {
 		    public void actionPerformed(ActionEvent e) {
-		    	JTextField textField = new JTextField(notes.get(index).name);
-		    	textField.setPreferredSize(new Dimension(250, 25));
-		    	int option = JOptionPane.showConfirmDialog(null, textField, "Cập nhật ghi chú", JOptionPane.YES_NO_OPTION, JOptionPane.PLAIN_MESSAGE);
-		    	String text = textField.getText();
-		    	
-		    	// Neu khong chon YES
-		    	if(option != JOptionPane.YES_OPTION) return;
-		    	
-		    	// Kiem tra dau vao
-		    	if(!(text.length() >= 0 && !text.equals(notes.get(index).name))) return;
-		    	
-		    	notes.get(index).name = text;
-		    	noteListModel.get(index).name = text;
-	    		// Cap nhat len server
-	    		NoteAPI.update(notes.get(index)).thenAccept(res -> {
-	    			// Hien popup neu xay ra loi
-	    			if(!res.status) {
-	    				SwingLibrary.alert(res.message);
-	    			}
-	    		});
+		    	renameNote(notes, index, noteListModel);
 		    }
 		});
 		
@@ -141,6 +122,29 @@ public class NoteContextMenu extends JPopupMenu {
 		
 		// Cap nhat len server
 		NoteAPI.updateColor(notes.get(index)).thenAccept(res -> {
+			// Hien popup neu xay ra loi
+			if(!res.status) {
+				SwingLibrary.alert(res.message);
+			}
+		});
+	}
+	
+	public static void renameNote(List<NoteModel> notes, int index, DefaultListModel<NoteModel> noteListModel) {
+		JTextField textField = new JTextField(notes.get(index).name);
+    	textField.setPreferredSize(new Dimension(250, 25));
+    	int option = JOptionPane.showConfirmDialog(null, textField, "Cập nhật ghi chú", JOptionPane.YES_NO_OPTION, JOptionPane.PLAIN_MESSAGE);
+    	String text = textField.getText();
+    	
+    	// Neu khong chon YES
+    	if(option != JOptionPane.YES_OPTION) return;
+    	
+    	// Kiem tra dau vao
+    	if(!(text.length() >= 0 && !text.equals(notes.get(index).name))) return;
+    	
+    	notes.get(index).name = text;
+    	noteListModel.get(index).name = text;
+		// Cap nhat len server
+		NoteAPI.update(notes.get(index)).thenAccept(res -> {
 			// Hien popup neu xay ra loi
 			if(!res.status) {
 				SwingLibrary.alert(res.message);

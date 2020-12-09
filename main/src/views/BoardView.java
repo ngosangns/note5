@@ -42,6 +42,8 @@ import javax.swing.JCheckBox;
 import java.text.SimpleDateFormat;
 import java.awt.event.ItemListener;
 import java.awt.event.ItemEvent;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 
 public class BoardView extends JPanel {
 	/**
@@ -119,6 +121,7 @@ public class BoardView extends JPanel {
 		addBoardPanel.setLayout(new MigLayout("inset 0", "[grow][50px]", "[]"));
 		
 		addBoardTextField = new JTextField();
+		
 		addBoardPanel.add(addBoardTextField, "cell 0 0,growx");
 		addBoardTextField.setColumns(10);
 		
@@ -146,22 +149,6 @@ public class BoardView extends JPanel {
 		noteList = new JList<NoteModel>();
 		noteListModel = new DefaultListModel<NoteModel>();
 		noteList.setModel(noteListModel);
-		
-		noteList.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mousePressed(MouseEvent e) {
-				// Set hanh dong khi chuot phai vao board jlist
-				if (SwingUtilities.isRightMouseButton(e) ) {
-					// Lay ra index cua note hien tai
-					int temp_getNoteIndex = noteList.locationToIndex(e.getPoint());
-					noteList.requestFocus();
-					noteList.setSelectedIndex(temp_getNoteIndex);
-					// Hien popup
-					JPopupMenu popupMenu = new NoteContextMenu(cboard.notes, temp_getNoteIndex, noteListModel);
-					popupMenu.show(e.getComponent(), e.getX(), e.getY());
-	            }
-			}
-		});
 		
 		JScrollPane boardScrollPane = new JScrollPane(boardList);
 		add(boardScrollPane, "cell 0 1,grow");
@@ -325,81 +312,29 @@ public class BoardView extends JPanel {
 		// Chèn hành động thêm board cho nút
 		addBoardButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				BoardModel board = new BoardModel();
-				board.name = addBoardTextField.getText();
-				
-				// Kiểm tra trống
-				if(board.name.length() == 0) return;
-				
-				// Xoa thanh nhap
-				addBoardTextField.setText(null);
-				
-				// Tạo board
-				BoardAPI.create(board).thenAccept(res -> {
-					// Nếu không có lỗi thì thôi
-					if(res.status) {
-						// Them board vao board list va cap nhat jlist
-						boards.add(board);
-						boardListModel.clear();
-						boardListModel.addAll(boards);
-						try {
-							// Them thong tin duoc tao tren server vao board
-							board.id = String.valueOf(res.data.get("id"));
-							board.date_created = String.valueOf(res.data.get("date_created"));
-							board.user_id = String.valueOf(res.data.get("user_id"));
-						}
-						catch(Exception e2) {
-							System.out.println(e2);
-						}
-						
-					}
-					// Nếu có lỗi hiện popup
-					else {
-						SwingLibrary.alert(res.message);
-					}
-				});
+				addBoard();
 			}
 		});
 		
 		// Chèn hành động thêm note cho nút
 		addNoteButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				// Kiem tra xem da chon board chua
-				if(cboard == null) return;
-				// Lay gia tri bang hien tai
-				BoardModel progBoard = cboard;
-				NoteModel model = new NoteModel(addNoteTextField.getText());
-				// Kiểm tra trống
-				if(model.name.length() == 0) return;
-				// Reset text trong o nhap
-				addNoteTextField.setText(null);
-				// Cap nhat len server
-				NoteAPI.create(model, cboard.id).thenAccept(res -> {
-					// Neu co loi thi hien popup loi
-					if(!res.status) {
-						SwingLibrary.alert(res.message);
-					}
-					// Nếu không có lỗi thì thôi
-					else {
-						// Them thong tin duoc tao tren server vao board
-						model.id = String.valueOf(res.data.get("id"));
-						model.date_created = String.valueOf(res.data.get("date_created"));
-						model.board_id = String.valueOf(res.data.get("board_id"));
-						// Them note moi vao board
-						progBoard.notes.add(model);
-						// Kiem tra neu bang hien tai dang bat thi cap nhat lai list note
-						if(progBoard == cboard) {
-							noteListModel.clear();
-							noteListModel.addAll(cboard.notes);
-						}
-					}
-				});
+				addNote();
 			}
 		});
 		
 		boardList.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mousePressed(MouseEvent e) {
+				// Set hanh dong khi double click vao board
+				if (e.getClickCount() == 2) {
+					// Lay ra index cua board hien tai
+					int temp_getBoardIndex = boardList.locationToIndex(e.getPoint());
+					boardList.requestFocus();
+					boardList.setSelectedIndex(temp_getBoardIndex);
+					// Sua ten
+					BoardContextMenu.renameBoard(boards, temp_getBoardIndex, boardListModel);
+				}
 				// Set hanh dong khi chuot phai vao board jlist
 				if (SwingUtilities.isRightMouseButton(e) ) {
 					// Lay ra index cua board hien tai
@@ -409,6 +344,52 @@ public class BoardView extends JPanel {
 					// Hien popup
 					JPopupMenu popupMenu = new BoardContextMenu(boards, temp_getBoardIndex, cboard, noteListModel, boardListModel);
 					popupMenu.show(e.getComponent(), e.getX(), e.getY());
+	            }
+			}
+		});
+		
+		noteList.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mousePressed(MouseEvent e) {
+				// Set hanh dong khi double click vao note
+				if (e.getClickCount() == 2) {
+					// Lay ra index cua note hien tai
+					int temp_getNoteIndex = noteList.locationToIndex(e.getPoint());
+					noteList.requestFocus();
+					noteList.setSelectedIndex(temp_getNoteIndex);
+					// Cap nhat note
+					NoteContextMenu.renameNote(cboard.notes, temp_getNoteIndex, noteListModel);
+				}
+				
+				// Set hanh dong khi chuot phai vao board jlist
+				if (SwingUtilities.isRightMouseButton(e) ) {
+					// Lay ra index cua note hien tai
+					int temp_getNoteIndex = noteList.locationToIndex(e.getPoint());
+					noteList.requestFocus();
+					noteList.setSelectedIndex(temp_getNoteIndex);
+					// Hien popup
+					JPopupMenu popupMenu = new NoteContextMenu(cboard.notes, temp_getNoteIndex, noteListModel);
+					popupMenu.show(e.getComponent(), e.getX(), e.getY());
+	            }
+			}
+		});
+		
+		// Thêm hotkey cho thanh nhập board
+		addBoardTextField.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyReleased(KeyEvent e) {
+				if (e.getKeyCode() == KeyEvent.VK_ENTER) {
+	                addBoard();
+	            }
+			}
+		});
+		
+		// Thêm hotkey cho thanh nhập note
+		addNoteTextField.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyReleased(KeyEvent e) {
+				if (e.getKeyCode() == KeyEvent.VK_ENTER) {
+	                addNote();
 	            }
 			}
 		});
@@ -431,6 +412,75 @@ public class BoardView extends JPanel {
 		        // -1 - less than, 1 - greater than, 0 - equal, all inversed for descending
 		    	return sortDate(((ObjectModel)lhs).date_created, ((ObjectModel)rhs).date_created);
 		    }
+		});
+	}
+	
+	private void addBoard() {
+		BoardModel board = new BoardModel();
+		board.name = addBoardTextField.getText();
+		
+		// Kiểm tra trống
+		if(board.name.length() == 0) return;
+		
+		// Xoa thanh nhap
+		addBoardTextField.setText(null);
+		
+		// Tạo board
+		BoardAPI.create(board).thenAccept(res -> {
+			// Nếu không có lỗi thì thôi
+			if(res.status) {
+				// Them board vao board list va cap nhat jlist
+				boards.add(board);
+				boardListModel.clear();
+				boardListModel.addAll(boards);
+				try {
+					// Them thong tin duoc tao tren server vao board
+					board.id = String.valueOf(res.data.get("id"));
+					board.date_created = String.valueOf(res.data.get("date_created"));
+					board.user_id = String.valueOf(res.data.get("user_id"));
+				}
+				catch(Exception e2) {
+					System.out.println(e2);
+				}
+				
+			}
+			// Nếu có lỗi hiện popup
+			else {
+				SwingLibrary.alert(res.message);
+			}
+		});
+	}
+	
+	private void addNote() {
+		// Kiem tra xem da chon board chua
+		if(cboard == null) return;
+		// Lay gia tri bang hien tai
+		BoardModel progBoard = cboard;
+		NoteModel model = new NoteModel(addNoteTextField.getText());
+		// Kiểm tra trống
+		if(model.name.length() == 0) return;
+		// Reset text trong o nhap
+		addNoteTextField.setText(null);
+		// Cap nhat len server
+		NoteAPI.create(model, cboard.id).thenAccept(res -> {
+			// Neu co loi thi hien popup loi
+			if(!res.status) {
+				SwingLibrary.alert(res.message);
+			}
+			// Nếu không có lỗi thì thôi
+			else {
+				// Them thong tin duoc tao tren server vao board
+				model.id = String.valueOf(res.data.get("id"));
+				model.date_created = String.valueOf(res.data.get("date_created"));
+				model.board_id = String.valueOf(res.data.get("board_id"));
+				// Them note moi vao board
+				progBoard.notes.add(model);
+				// Kiem tra neu bang hien tai dang bat thi cap nhat lai list note
+				if(progBoard == cboard) {
+					noteListModel.clear();
+					noteListModel.addAll(cboard.notes);
+				}
+			}
 		});
 	}
 }
