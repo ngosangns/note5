@@ -14,7 +14,7 @@
 #   Set larger code cache with -XX:ReservedCodeCacheSize=
 # This output file may be truncated or incomplete.
 #
-#  Out of Memory Error (./open/src/hotspot/os/windows/os_windows.cpp:3275), pid=17908, tid=16192
+#  Out of Memory Error (./open/src/hotspot/os/windows/os_windows.cpp:3275), pid=7308, tid=19484
 #
 # JRE version:  (11.0.9+7) (build )
 # Java VM: Java HotSpot(TM) 64-Bit Server VM (11.0.9+7-LTS, mixed mode, sharing, tiered, compressed oops, g1 gc, windows-amd64)
@@ -26,13 +26,13 @@
 Command Line: -Dfile.encoding=UTF-8 main.Main
 
 Host: Intel(R) Pentium(R) CPU G4560 @ 3.50GHz, 4 cores, 7G,  Windows 10 , 64 bit Build 19041 (10.0.19041.546)
-Time: Wed Dec  2 22:59:33 2020 SE Asia Standard Time elapsed time: 0.028024 seconds (0d 0h 0m 0s)
+Time: Fri Dec  4 23:30:54 2020 SE Asia Standard Time elapsed time: 0.018861 seconds (0d 0h 0m 0s)
 
 ---------------  T H R E A D  ---------------
 
-Current thread (0x000002221dec4000):  JavaThread "Unknown thread" [_thread_in_vm, id=16192, stack(0x000000f05fc00000,0x000000f05fd00000)]
+Current thread (0x000002c8cb576000):  JavaThread "Unknown thread" [_thread_in_vm, id=19484, stack(0x000000efa0c00000,0x000000efa0d00000)]
 
-Stack: [0x000000f05fc00000,0x000000f05fd00000]
+Stack: [0x000000efa0c00000,0x000000efa0d00000]
 Native frames: (J=compiled Java code, j=interpreted, Vv=VM code, C=native code)
 V  [jvm.dll+0x611a3a]
 V  [jvm.dll+0x748aaf]
@@ -63,22 +63,22 @@ C  [ntdll.dll+0x4cec1]
 ---------------  P R O C E S S  ---------------
 
 Threads class SMR info:
-_java_thread_list=0x000002221ddd0520, length=0, elements={
+_java_thread_list=0x000002c8c9ce18e0, length=0, elements={
 }
 
 Java Threads: ( => current thread )
 
 Other Threads:
-  0x000002221deda800 GCTaskThread "GC Thread#0" [stack: 0x000000f05fd00000,0x000000f05fe00000] [id=12264]
-  0x000002221df0c000 ConcurrentGCThread "G1 Main Marker" [stack: 0x000000f05fe00000,0x000000f05ff00000] [id=16052]
-  0x000002221df0d800 ConcurrentGCThread "G1 Conc#0" [stack: 0x000000f05ff00000,0x000000f060000000] [id=17336]
+  0x000002c8cb58b800 GCTaskThread "GC Thread#0" [stack: 0x000000efa0d00000,0x000000efa0e00000] [id=19488]
+  0x000002c8cb5bd800 ConcurrentGCThread "G1 Main Marker" [stack: 0x000000efa0e00000,0x000000efa0f00000] [id=19492]
+  0x000002c8cb5bf000 ConcurrentGCThread "G1 Conc#0" [stack: 0x000000efa0f00000,0x000000efa1000000] [id=19496]
 
-[error occurred during error reporting (printing all threads), id 0xc0000005, EXCEPTION_ACCESS_VIOLATION (0xc0000005) at pc=0x00007ffdaa7e42a7]
+[error occurred during error reporting (printing all threads), id 0xc0000005, EXCEPTION_ACCESS_VIOLATION (0xc0000005) at pc=0x00007ffb927842a7]
 
 VM state:not at safepoint (not fully initialized)
 
 VM Mutex/Monitor currently owned by a thread:  ([mutex/lock_event])
-[0x000002221dec0ef0] Heap_lock - owner thread: 0x000002221dec4000
+[0x000002c8cb573c00] Heap_lock - owner thread: 0x000002c8cb576000
 
 Heap address: 0x0000000081c00000, size: 2020 MB, Compressed Oops mode: Non-zero based: 0x0000000081c00000
 Narrow klass base: 0x0000000000000000, Narrow klass shift: 0
@@ -100,39 +100,39 @@ No events
 
 
 Dynamic libraries:
-0x00007ff62bb50000 - 0x00007ff62bb5f000 	C:\Program Files\Java\jdk-11.0.9\bin\javaw.exe
-0x00007ffe0bb50000 - 0x00007ffe0bd46000 	C:\Windows\SYSTEM32\ntdll.dll
-0x00007ffe0a920000 - 0x00007ffe0a9dd000 	C:\Windows\System32\KERNEL32.DLL
-0x00007ffe094c0000 - 0x00007ffe09788000 	C:\Windows\System32\KERNELBASE.dll
-0x00007ffe09790000 - 0x00007ffe09890000 	C:\Windows\System32\ucrtbase.dll
-0x00007ffdda4b0000 - 0x00007ffdda4c8000 	C:\Program Files\Java\jdk-11.0.9\bin\jli.dll
-0x00007ffe0b040000 - 0x00007ffe0b0ec000 	C:\Windows\System32\ADVAPI32.dll
-0x00007ffe0b290000 - 0x00007ffe0b32e000 	C:\Windows\System32\msvcrt.dll
-0x00007ffe09c60000 - 0x00007ffe09cfb000 	C:\Windows\System32\sechost.dll
-0x00007ffe09d00000 - 0x00007ffe09e24000 	C:\Windows\System32\RPCRT4.dll
-0x00007ffe0ae70000 - 0x00007ffe0b010000 	C:\Windows\System32\USER32.dll
-0x00007ffe09490000 - 0x00007ffe094b2000 	C:\Windows\System32\win32u.dll
-0x00007ffe0b010000 - 0x00007ffe0b03a000 	C:\Windows\System32\GDI32.dll
-0x00007ffe09290000 - 0x00007ffe09399000 	C:\Windows\System32\gdi32full.dll
-0x00007ffe093f0000 - 0x00007ffe0948d000 	C:\Windows\System32\msvcp_win.dll
-0x00007ffe04450000 - 0x00007ffe04465000 	C:\Program Files\Java\jdk-11.0.9\bin\VCRUNTIME140.dll
-0x00007ffdec850000 - 0x00007ffdecaeb000 	C:\Windows\WinSxS\amd64_microsoft.windows.common-controls_6595b64144ccf1df_6.0.19041.488_none_ca04af081b815d21\COMCTL32.dll
-0x00007ffe04100000 - 0x00007ffe0410a000 	C:\Windows\SYSTEM32\VERSION.dll
-0x00007ffe0b260000 - 0x00007ffe0b290000 	C:\Windows\System32\IMM32.DLL
-0x00007ffdda1f0000 - 0x00007ffdda28b000 	C:\Program Files\Java\jdk-11.0.9\bin\msvcp140.dll
-0x00007ffdaa500000 - 0x00007ffdaaff7000 	C:\Program Files\Java\jdk-11.0.9\bin\server\jvm.dll
-0x00007ffe0b0f0000 - 0x00007ffe0b0f8000 	C:\Windows\System32\PSAPI.DLL
-0x00007ffdf0be0000 - 0x00007ffdf0be9000 	C:\Windows\SYSTEM32\WSOCK32.dll
-0x00007ffe0b100000 - 0x00007ffe0b16b000 	C:\Windows\System32\WS2_32.dll
-0x00007ffded0a0000 - 0x00007ffded0c7000 	C:\Windows\SYSTEM32\WINMM.dll
-0x00007ffe07200000 - 0x00007ffe07212000 	C:\Windows\SYSTEM32\kernel.appcore.dll
-0x00007ffdedca0000 - 0x00007ffdedcb0000 	C:\Program Files\Java\jdk-11.0.9\bin\verify.dll
-0x00007ffdf5400000 - 0x00007ffdf55e4000 	C:\Windows\SYSTEM32\DBGHELP.DLL
-0x00007ffdf3c60000 - 0x00007ffdf3c8c000 	C:\Windows\SYSTEM32\dbgcore.DLL
-0x00007ffe09b30000 - 0x00007ffe09baf000 	C:\Windows\System32\bcryptPrimitives.dll
-0x00007ffdd4f50000 - 0x00007ffdd4f78000 	C:\Program Files\Java\jdk-11.0.9\bin\java.dll
-0x00007ffdedc00000 - 0x00007ffdedc0a000 	C:\Program Files\Java\jdk-11.0.9\bin\jimage.dll
-0x00007ffde7090000 - 0x00007ffde70a6000 	C:\Program Files\Java\jdk-11.0.9\bin\zip.dll
+0x00007ff663690000 - 0x00007ff66369f000 	C:\Program Files\Java\jdk-11.0.9\bin\javaw.exe
+0x00007ffbd24f0000 - 0x00007ffbd26e6000 	C:\Windows\SYSTEM32\ntdll.dll
+0x00007ffbd23f0000 - 0x00007ffbd24ad000 	C:\Windows\System32\KERNEL32.DLL
+0x00007ffbcfc30000 - 0x00007ffbcfef8000 	C:\Windows\System32\KERNELBASE.dll
+0x00007ffbd0090000 - 0x00007ffbd0190000 	C:\Windows\System32\ucrtbase.dll
+0x00007ffbc5560000 - 0x00007ffbc5578000 	C:\Program Files\Java\jdk-11.0.9\bin\jli.dll
+0x00007ffbd1ee0000 - 0x00007ffbd1f8c000 	C:\Windows\System32\ADVAPI32.dll
+0x00007ffbd2350000 - 0x00007ffbd23ee000 	C:\Windows\System32\msvcrt.dll
+0x00007ffbd1d40000 - 0x00007ffbd1ddb000 	C:\Windows\System32\sechost.dll
+0x00007ffbd0c80000 - 0x00007ffbd0da4000 	C:\Windows\System32\RPCRT4.dll
+0x00007ffbc4460000 - 0x00007ffbc4475000 	C:\Program Files\Java\jdk-11.0.9\bin\VCRUNTIME140.dll
+0x00007ffbd1a40000 - 0x00007ffbd1be0000 	C:\Windows\System32\USER32.dll
+0x00007ffbd0520000 - 0x00007ffbd0542000 	C:\Windows\System32\win32u.dll
+0x00007ffbd1de0000 - 0x00007ffbd1e0a000 	C:\Windows\System32\GDI32.dll
+0x00007ffbd03c0000 - 0x00007ffbd04c9000 	C:\Windows\System32\gdi32full.dll
+0x00007ffbd01c0000 - 0x00007ffbd025d000 	C:\Windows\System32\msvcp_win.dll
+0x00007ffbba030000 - 0x00007ffbba2cb000 	C:\Windows\WinSxS\amd64_microsoft.windows.common-controls_6595b64144ccf1df_6.0.19041.488_none_ca04af081b815d21\COMCTL32.dll
+0x00007ffbca2b0000 - 0x00007ffbca2ba000 	C:\Windows\SYSTEM32\VERSION.dll
+0x00007ffbd0a60000 - 0x00007ffbd0a90000 	C:\Windows\System32\IMM32.DLL
+0x00007ffbbe1e0000 - 0x00007ffbbe27b000 	C:\Program Files\Java\jdk-11.0.9\bin\msvcp140.dll
+0x00007ffb924a0000 - 0x00007ffb92f97000 	C:\Program Files\Java\jdk-11.0.9\bin\server\jvm.dll
+0x00007ffbd15c0000 - 0x00007ffbd15c8000 	C:\Windows\System32\PSAPI.DLL
+0x00007ffbb1020000 - 0x00007ffbb1047000 	C:\Windows\SYSTEM32\WINMM.dll
+0x00007ffbcb930000 - 0x00007ffbcb939000 	C:\Windows\SYSTEM32\WSOCK32.dll
+0x00007ffbd1be0000 - 0x00007ffbd1c4b000 	C:\Windows\System32\WS2_32.dll
+0x00007ffbcdba0000 - 0x00007ffbcdbb2000 	C:\Windows\SYSTEM32\kernel.appcore.dll
+0x00007ffbcb920000 - 0x00007ffbcb930000 	C:\Program Files\Java\jdk-11.0.9\bin\verify.dll
+0x00007ffbba380000 - 0x00007ffbba564000 	C:\Windows\SYSTEM32\DBGHELP.DLL
+0x00007ffbba590000 - 0x00007ffbba5bc000 	C:\Windows\SYSTEM32\dbgcore.DLL
+0x00007ffbcff60000 - 0x00007ffbcffdf000 	C:\Windows\System32\bcryptPrimitives.dll
+0x00007ffbc57c0000 - 0x00007ffbc57e8000 	C:\Program Files\Java\jdk-11.0.9\bin\java.dll
+0x00007ffbcb2c0000 - 0x00007ffbcb2ca000 	C:\Program Files\Java\jdk-11.0.9\bin\jimage.dll
+0x00007ffbc57a0000 - 0x00007ffbc57b6000 	C:\Program Files\Java\jdk-11.0.9\bin\zip.dll
 
 dbghelp: loaded successfully - version: 4.0.5 - missing functions: none
 symbol engine: initialized successfully - sym options: 0x614 - pdb path: .;C:\Program Files\Java\jdk-11.0.9\bin;C:\Windows\SYSTEM32;C:\Windows\WinSxS\amd64_microsoft.windows.common-controls_6595b64144ccf1df_6.0.19041.488_none_ca04af081b815d21;C:\Program Files\Java\jdk-11.0.9\bin\server
@@ -140,7 +140,7 @@ symbol engine: initialized successfully - sym options: 0x614 - pdb path: .;C:\Pr
 VM Arguments:
 jvm_args: -Dfile.encoding=UTF-8 
 java_command: main.Main
-java_class_path (initial): C:\Users\Admin\Documents\GitHub\note5\main\bin;C:\Users\Admin\Documents\GitHub\note5\main\miglayout15-swing.jar;C:\Users\Admin\Documents\GitHub\note5\main\java-json.jar
+java_class_path (initial): C:\Users\Admin\Documents\GitHub\note5\main\bin;C:\Users\Admin\Documents\GitHub\note5\main\lib\flatlaf\flatlaf-0.44.jar;C:\Users\Admin\Documents\GitHub\note5\main\lib\flatlaf\flatlaf-0.44-javadoc.jar;C:\Users\Admin\Documents\GitHub\note5\main\lib\flatlaf\flatlaf-0.44-sources.jar;C:\Users\Admin\Documents\GitHub\note5\main\lib\miglayout15-swing.jar;C:\Users\Admin\Documents\GitHub\note5\main\lib\java-json.jar;C:\Users\Admin\Documents\GitHub\note5\main\lib\flatlaf\flatlaf-intellij-themes-0.44.jar;C:\Users\Admin\Documents\GitHub\note5\main\lib\flatlaf\flatlaf-intellij-themes-0.44-javadoc.jar;C:\Users\Admin\Documents\GitHub\note5\main\lib\flatlaf\flatlaf-intellij-themes-0.44-sources.jar
 Launcher Type: SUN_STANDARD
 
 [Global flags]
@@ -183,8 +183,8 @@ OS: Windows 10 , 64 bit Build 19041 (10.0.19041.546)
 
 CPU:total 4 (initial active 4) (2 cores per cpu, 2 threads per core) family 6 model 158 stepping 9, cmov, cx8, fxsr, mmx, sse, sse2, sse3, ssse3, sse4.1, sse4.2, popcnt, aes, clmul, erms, 3dnowpref, lzcnt, ht, tsc, tscinvbit
 
-Memory: 4k page, system-wide physical 8079M (1576M free)
-TotalPageFile size 22374M (AvailPageFile size 25M)
+Memory: 4k page, system-wide physical 8079M (1297M free)
+TotalPageFile size 22351M (AvailPageFile size 58M)
 current process WorkingSet (physical memory assigned to process): 9M, peak: 9M
 current process commit charge ("private bytes"): 51M, peak: 179M
 

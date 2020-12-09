@@ -7,22 +7,23 @@ import main.Main;
 import models.LoggingUserModel;
 import models.UserModel;
 import models.api.UserAPI;
-import models.library.NoteLibrary;
+import models.library.MainLibrary;
 import models.library.SwingLibrary;
 import net.miginfocom.swing.MigLayout;
 import javax.swing.JLabel;
-import javax.swing.SwingConstants;
 
 import controllers.MainController;
 
-import java.awt.Label;
 import javax.swing.JButton;
-import java.awt.GridBagLayout;
 import javax.swing.JTextField;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 
 public class LoginView extends JPanel {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private JTextField username;
 	private JPasswordField password;
 	public LoginView() {
@@ -56,7 +57,7 @@ public class LoginView extends JPanel {
 			public void actionPerformed(ActionEvent e) {
 				String passwordText = String.valueOf(password.getPassword());
 				UserModel user = new UserModel();
-	    		user.username = username.getText();
+				user.username = username.getText();
 	    		user.password = String.valueOf(password.getPassword());
 	    		
 	    		// Kiểm tra đầu vào trống
@@ -79,7 +80,7 @@ public class LoginView extends JPanel {
 	    				Main.logging_user.username = user.username;
 	    				Main.logging_user.token = (String) res.data.get("token");
 	    				// Ghi token vào user_token
-	    				NoteLibrary.writeTokenFile((String) res.data.get("token"));
+	    				MainLibrary.writeTokenFile((String) res.data.get("token"));
 	    				// Direct đến trang board
 	    				MainController.invoke("BoardView");
 	    			}
@@ -91,7 +92,5 @@ public class LoginView extends JPanel {
 		});
 		panel.add(submit, "cell 0 1,alignx center");
 		Main.frame.setTitle("Đăng nhập");
-		
-		
 	}
 }

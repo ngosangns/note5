@@ -11,14 +11,17 @@ import main.Main;
 import models.LoggingUserModel;
 import models.UserModel;
 import models.api.UserAPI;
-import models.library.NoteLibrary;
+import models.library.MainLibrary;
 import models.library.SwingLibrary;
 import net.miginfocom.swing.MigLayout;
 import java.awt.event.ActionListener;
-import java.util.concurrent.CompletableFuture;
 import java.awt.event.ActionEvent;
 
 public class RegisterView extends JPanel {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private JTextField username;
 	private JPasswordField password;
 	private JPasswordField rePassword;
@@ -91,7 +94,7 @@ public class RegisterView extends JPanel {
 	    				Main.logging_user.username = user.username;
 	    				Main.logging_user.token = (String) res.data.get("token");
 	    				// Ghi token vào user_token
-	    				NoteLibrary.writeTokenFile((String) res.data.get("token"));
+	    				MainLibrary.writeTokenFile((String) res.data.get("token"));
 	    				// Direct đến trang board
 	    				MainController.invoke("BoardView");
 	    			}

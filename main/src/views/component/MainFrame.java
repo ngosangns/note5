@@ -1,22 +1,25 @@
-package views;
+package views.component;
 
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.GridLayout;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
 public class MainFrame extends JFrame {
-	public int width = 1000;
-	public int height = 500;
-	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	private MenuBar menuBar;
 	public MainFrame() {
 		getContentPane().setBackground(Color.WHITE);
 		getContentPane().setLayout(new GridLayout(1, 0, 0, 0));
-		setSize(width, height);
-		setResizable(false); // Chặn thay đổi kích thước frame
+		setSize(800, 400);
+		setMinimumSize(new Dimension(800, 400));
 		setBackground(Color.white);
-		setJMenuBar(new MenuBar()); // Add MenuBar
+		menuBar = new MenuBar();
 		getContentPane().setBackground(Color.white); // Set background color
 		setVisible(true); // Hiển thị frame
 	}
@@ -36,21 +39,12 @@ public class MainFrame extends JFrame {
 		setVisible(true);
 	}
 	
-	/**
-	 * Lấy chiều dài của frame dựa vào % đưa vào
-	 * @param percent
-	 * @return
-	 */
-	public int getPercentOfWidth(double percent) {
-		return (int)Math.round(width*percent/100);
+	public void disableMenuBar() {
+		setJMenuBar(null);
 	}
 	
-	/**
-	 * Lấy chiều rộng của frame dựa vào % đưa vào
-	 * @param percent
-	 * @return
-	 */
-	public int getPercentOfHeight(double percent) {
-		return (int)Math.round(height*percent/100);
+	public void enableMenuBar() {
+		setJMenuBar(menuBar);
 	}
+	
 }
