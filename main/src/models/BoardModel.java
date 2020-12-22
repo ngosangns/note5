@@ -17,9 +17,4 @@ public class BoardModel extends ObjectModel {
 	}
 	
 	public BoardModel() { }
-	
-	@Override
-	public String toString() {
-	    return name;
-	}
 }

@@ -5,4 +5,8 @@ public class ObjectModel {
 	public String name;
 	public String date_created;
 	public String color;
+	
+	public String toString() {
+	    return name;
+	}
 }
