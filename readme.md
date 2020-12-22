@@ -1,6 +1,8 @@
 # Note 5 - Note tool on desktop
 Language: Java
+
 GUI Component Library: Swing
+
 Features:
 - CRUD boards and notes.
 - Set color for priority.
