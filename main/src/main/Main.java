@@ -33,6 +33,7 @@ public class Main {
 		
 		// Chuyển đến trang loading
 		controllers.MainController.invoke("LoadingView");
+		
 		// Đứng hình cho vui
 		try {
 			Thread.sleep(2000);
